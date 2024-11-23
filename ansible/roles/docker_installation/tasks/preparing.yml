@@ -17,6 +17,6 @@
     owner: root
     group: root
 
-- name: Update apt cache
-  ansible.builtin.command:
-    cmd: apt update
+- name: Update apt cache if required
+  ansible.builtin.apt:
+    update_cache: yes
