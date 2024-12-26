@@ -16,3 +16,7 @@
     mode: 0644
     owner: root
     group: root
+
+- name: Update apt cache if required
+  ansible.builtin.apt:
+    update_cache: yes
