@@ -67,10 +67,29 @@
     weekday: "*"
     month: "*"
     day: "*"
-    hour: "*"
-    minute: "*"
+    hour: "03"
+    minute: "23"
     user: root
-    job: "/usr/bin/docker exec -it gitlab gitlab-backup create CRON=1"
+    job: "/usr/bin/docker exec -i gitlab gitlab-backup create CRON=1"
     cron_file: gitlab_backup_create
   tags:
     - cron
+
+- name: Install multi python packages
+  ansible.builtin.pip:
+    name:
+      - boto
+      - boto3
+      - botocore
+  tags:
+    - gitlab-minio
+
+- name: Create an empty bucket on minio object storage
+  amazon.aws.s3_bucket:
+    endpoint_url: "{{ minio_api_endpoint }}"
+    access_key: "{{ minio_root_user }}"
+    secret_key: "{{ minio_root_pass }}"
+    name: "{{ minio_gitlab_backup_bucket }}"
+    state: present
+  tags:
+    - gitlab-minio
