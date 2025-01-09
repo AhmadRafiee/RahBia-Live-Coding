@@ -30,9 +30,6 @@ By the end of this series, you’ll have a complete toolkit to handle production
 In this series, we’ll progress side by side, getting hands-on with each topic and learning through experience. Together, we’ll **encounter challenges**, **troubleshoot errors**, and find solutions as we move forward. This journey is all about exploring and overcoming DevOps challenges together!
 
 ### Previous Sessions
-<details>
-  <summary>RahBia Live Coding Sessions</summary>
-
 Below is a list of the sessions we've already completed in the RahBia Live Coding Series. Each session builds upon the previous one, providing you with a step-by-step guide to mastering essential DevOps skills. If you've missed any session, you can always catch up and continue from where we left off!
 
   - **[Session 01:](2024-Sessions/Session-01-06-November.md)** Getting Started, Setting the Stage - Server Setup & Initial Configuration
@@ -44,10 +41,10 @@ Below is a list of the sessions we've already completed in the RahBia Live Codin
   - **[Session 07:](2024-Sessions/Session-07-18-December.md)** Setup Traefik and Minio services with docker and ansible
   - **[Session 08:](2024-Sessions/Session-08-25-December.md)** Setup Traefik and gitlab services with docker and ansible
   - **[Session 09:](2025-Sessions/Session-09-01-January.md)** Setup and config gitlab services with docker and ansible
+  - **[Session 10:](2025-Sessions/Session-09-08-January.md)** We’ll finalize the GitLab service setup
+
 
 Feel free to check out the session's detailed steps and resources in the respective session folders. We’ll keep updating this list as we progress through more advanced topics in DevOps.
-
-</details>
 
 
 ### Here’s What We’ll Be Doing:
@@ -75,9 +72,20 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
   - [x] Create a VM template on VMware and write an Ansible playbook to automate VM creation
   - [ ] Deploy the project as a service on a server with a database and cache, demonstrating the challenges and complexities
   - [x] Set up GitLab on Docker to continue the project
+    - [ ] Gitlab Update
+    - [ ] create gitlab runner server
+    - [ ] register gitlab runner service
+    - [ ] create gitlab backup script
+      - [ ] move and put to minio
+      - [ ] encrypt backup file
+      - [ ] create cron tab for gitlab backup
   - [ ] Set up Nexus on Docker to continue the project
   - [x] Set up Traefik on Docker to continue the project
   - [x] Set up MinIo on Docker to continue the project
+    - [x] create bucket
+    - [ ] create user
+    - [ ] create policy
+    - [ ] match user with policy
   - [ ] Write an Ansible playbook to automate all tasks completed so far
   - [ ] Draw a High-Level Design (HLD) diagram of the services built and the path taken
   - [ ] Review Dockerfiles, build images and push them to a registry
