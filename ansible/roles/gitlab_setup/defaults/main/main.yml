@@ -1,5 +1,6 @@
 ---
 service_dir: "{{ project_dir }}/gitlab"
+backups_dir: "{{ project_dir }}/backup"
 
 gitlab_image_tag: 17.7.0-ce.0
 

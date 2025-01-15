@@ -5,6 +5,6 @@
   roles:
     - ssh_hardening
     - os_hardening
-    - docker_installation
+    - docker_setup
     - traefik_setup
     - minio_setup

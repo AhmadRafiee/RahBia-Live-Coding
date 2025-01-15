@@ -3,4 +3,4 @@
   become: true
   gather_facts: true
   roles:
-    - docker_installation
+    - docker_setup

@@ -28,4 +28,4 @@ You can use the Docker role in a playbook like the example below to install and 
       become: true
       gather_facts: true
       roles:
-        - ../roles/docker_installation
+        - ../roles/docker_setup

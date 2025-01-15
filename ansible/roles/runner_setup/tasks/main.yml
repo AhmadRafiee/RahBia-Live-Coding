@@ -1,0 +1,13 @@
+---
+- name: Setup Gitlab runner service
+  import_tasks: runner-setup.yml
+  tags:
+    - install_runner
+    - setup_runner
+
+- name: register Gitlab runner service
+  import_tasks: runner-register.yml
+  tags:
+    - register_runner
+    - setup_runner
+

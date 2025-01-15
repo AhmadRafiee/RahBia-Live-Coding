@@ -41,7 +41,8 @@ Below is a list of the sessions we've already completed in the RahBia Live Codin
   - **[Session 07:](2024-Sessions/Session-07-18-December.md)** Setup Traefik and Minio services with docker and ansible
   - **[Session 08:](2024-Sessions/Session-08-25-December.md)** Setup Traefik and gitlab services with docker and ansible
   - **[Session 09:](2025-Sessions/Session-09-01-January.md)** Setup and config gitlab services with docker and ansible
-  - **[Session 10:](2025-Sessions/Session-09-08-January.md)** We’ll finalize the GitLab service setup
+  - **[Session 10:](2025-Sessions/Session-10-08-January.md)** We’ll finalize the GitLab service setup
+  - **[Session 11:](2025-Sessions/Session-11-15-January.md)** Finalize the GitLab service setup
 
 
 Feel free to check out the session's detailed steps and resources in the respective session folders. We’ll keep updating this list as we progress through more advanced topics in DevOps.
@@ -73,12 +74,12 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
   - [ ] Deploy the project as a service on a server with a database and cache, demonstrating the challenges and complexities
   - [x] Set up GitLab on Docker to continue the project
     - [ ] Gitlab Update
-    - [ ] create gitlab runner server
-    - [ ] register gitlab runner service
-    - [ ] create gitlab backup script
-      - [ ] move and put to minio
-      - [ ] encrypt backup file
-      - [ ] create cron tab for gitlab backup
+    - [x] create gitlab runner server
+    - [x] register gitlab runner service
+    - [x] create gitlab backup script
+      - [x] move and put to minio
+      - [x] encrypt backup file
+      - [x] create cron tab for gitlab backup
   - [ ] Set up Nexus on Docker to continue the project
   - [x] Set up Traefik on Docker to continue the project
   - [x] Set up MinIo on Docker to continue the project

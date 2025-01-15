@@ -1,95 +1,12 @@
 ---
-- name: Copy file
-  ansible.builtin.copy:
-    src: pip.conf
-    dest: /root/.config/pip/pip.conf
+- name: Setup Gitlab Service
+  import_tasks: gitlab-setup.yml
   tags:
-    - preparing
+    - install_gitlab
+    - setup_gitlab
 
-- name: Install multi python packages
-  ansible.builtin.pip:
-    name:
-      - docker
-      - PyYAML==5.3.1
-      - docker-compose
+- name: Setup backup for gitlab service
+  import_tasks: gitlab-backup.yml
   tags:
-    - preparing
-    - docker
-
-- name: Create a docker network with name
-  docker_network:
-    name: "{{ item }}"
-    driver_options:
-      com.docker.network.bridge.name: "{{ item }}"
-  loop:
-    - web_net
-    - app_net
-  tags:
-    - preparing
-    - docker
-
-- name: Creates directory
-  ansible.builtin.file:
-    path: "{{ service_dir }}"
-    state: directory
-  tags:
-    - preparing
-
-- name: Copy file with owner and permissions
-  ansible.builtin.copy:
-    src: compose.yml
-    dest: "{{ service_dir }}/compose.yml"
-  tags:
-    - preparing
-
-- name: Template a file to path
-  ansible.builtin.template:
-    src: .env.j2
-    dest: "{{ service_dir }}/.env"
-  tags:
-    - preparing
-
-- name: Pull images for project
-  community.docker.docker_compose_v2_pull:
-    project_src: "{{ service_dir }}"
-  tags:
-    - pull
-
-- name: deploy Docker Compose stack
-  community.docker.docker_compose_v2:
-    project_src: "{{ service_dir }}"
-  tags:
-    - deploy
-
-- name: Creates a cron file under /etc/cron.d for gitlab backup
-  cron:
-    name: gitlab-backup
-    weekday: "*"
-    month: "*"
-    day: "*"
-    hour: "03"
-    minute: "23"
-    user: root
-    job: "/usr/bin/docker exec -i gitlab gitlab-backup create CRON=1"
-    cron_file: gitlab_backup_create
-  tags:
-    - cron
-
-- name: Install multi python packages
-  ansible.builtin.pip:
-    name:
-      - boto
-      - boto3
-      - botocore
-  tags:
-    - gitlab-minio
-
-- name: Create an empty bucket on minio object storage
-  amazon.aws.s3_bucket:
-    endpoint_url: "{{ minio_api_endpoint }}"
-    access_key: "{{ minio_root_user }}"
-    secret_key: "{{ minio_root_pass }}"
-    name: "{{ minio_gitlab_backup_bucket }}"
-    state: present
-  tags:
-    - gitlab-minio
+    - backup_gitlab
+    - setup_gitlab

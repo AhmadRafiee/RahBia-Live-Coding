@@ -1,0 +1,45 @@
+#!/bin/bash
+## variable sections ###################################
+DATA_DIR=/var/lib/docker/volumes/gitlab_config/
+BACKUP_DIR=/opt/BACKUP
+NOW=$(date "+%F_%H-%M-%S")
+BACKUP_NAME=gitlab_config_backup_${NOW}
+ENCRYPT_PASS={{ gitlab_backup_encryption_pass }}
+
+MINIO_ENDPOINT={{ minio_api_endpoint }}
+MINIO_USERNAME={{ minio_gitlab_backup_username }}
+MINIO_PASSWORD={{ minio_gitlab_backup_password }}
+MINIO_BUCKET={{ minio_gitlab_backup_bucket }}
+MINIO_ALIAS=minio_gitlab_backup
+#######################################################
+
+# create ${BACKUP_DIR} if not exist
+[[ -d ${BACKUP_DIR} ]] || mkdir -p ${BACKUP_DIR}
+
+# create and move backup file
+cd ${DATA_DIR}
+tar -czf ${BACKUP_NAME}.tar.gz _data/*
+mv ${BACKUP_NAME}.tar.gz ${BACKUP_DIR}
+
+# encrypt backup file
+cd ${BACKUP_DIR}
+gpg --symmetric \
+    --cipher-algo AES256 \
+    --batch --yes \
+    --passphrase ${ENCRYPT_PASS} \
+    ${BACKUP_NAME}.tar.gz
+
+# change backup file attribute
+chattr +i ${BACKUP_NAME}.tar.gz
+
+# check and setup mc information
+which mc || curl https://dl.min.io/client/mc/release/linux-amd64/mc \
+                                        -o /usr/local/bin/mc \
+                                        && chmod +x /usr/local/bin/mc
+
+mc alias list | grep ${MINIO_ALIAS} || mc alias set ${MINIO_ALIAS} ${MINIO_ENDPOINT} ${MINIO_USERNAME} ${MINIO_PASSWORD}
+
+cd ${BACKUP_DIR}
+mc put ${BACKUP_NAME}.tar.gz.gpg ${MINIO_ALIAS}/${MINIO_BUCKET}
+rm ${BACKUP_NAME}.tar.gz.gpg
+mc ls ${MINIO_ALIAS}/${MINIO_BUCKET}/${BACKUP_NAME}.tar.gz.gpg

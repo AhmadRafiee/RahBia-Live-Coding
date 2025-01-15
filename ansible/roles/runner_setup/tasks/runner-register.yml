@@ -1,0 +1,13 @@
+---
+- name: Check if runner is registered already
+  shell: |
+      docker compose exec runner gitlab-runner list
+  register: check_runner
+  args:
+    chdir: "{{ service_dir }}"
+
+- name: Register runners
+  ansible.builtin.template:
+    src: runner-config.toml.j2
+    dest: /var/lib/docker/volumes/runner_data/_data/config.toml
+  when: runner.name not in check_runner.stdout

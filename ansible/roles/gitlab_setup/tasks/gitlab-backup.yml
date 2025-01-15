@@ -1,0 +1,39 @@
+---
+- name: Creates directory
+  ansible.builtin.file:
+    path: "{{ backups_dir }}"
+    state: directory
+
+- name: Template a file to path
+  ansible.builtin.template:
+    src: gitlab_config_backup.sh.j2
+    dest: "{{ backups_dir }}/gitlab_config_backup.sh"
+    mode: '0744'
+
+- name: Creates a cron file under /etc/cron.d for gitlab backup
+  cron:
+    name: gitlab-data-backup
+    weekday: "*"
+    month: "*"
+    day: "*"
+    hour: "03"
+    minute: "23"
+    user: root
+    job: "/usr/bin/docker exec -i gitlab gitlab-backup create CRON=1"
+    cron_file: gitlab_backup_create
+  tags:
+    - cron
+
+- name: Creates a cron file under /etc/cron.d for gitlab backup
+  cron:
+    name: gitlab-config-backup
+    weekday: "*"
+    month: "*"
+    day: "*"
+    hour: "03"
+    minute: "11"
+    user: root
+    job: "bash {{ backups_dir }}/gitlab_config_backup.sh"
+    cron_file: gitlab_backup_create
+  tags:
+    - cron

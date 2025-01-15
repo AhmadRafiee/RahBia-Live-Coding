@@ -6,19 +6,19 @@ all:
     single-node:
       hosts:
         Rahbia-template:
-        rahbia-server-test-1:
-          DISK_SIZE: 50
-          DATASTORE_NAME: SSD-SAMSUNG-4T-1
-          MEMORY_SIZE: 8192
-          CPU_SIZE: 4
-          IP_ADDRESS: 192.168.200.100
-          VM_FOLDER: RahBia-Live-Coding
-          SSH_JUMP: "ssh -W %h:%p -q labe-amoo"
         rahbia-services:
           DISK_SIZE: 100
           DATASTORE_NAME: SSD-SAMSUNG-4T-2
           MEMORY_SIZE: 8192
           CPU_SIZE: 4
           IP_ADDRESS: 192.168.200.101
+          VM_FOLDER: RahBia-Live-Coding
+          SSH_JUMP: "ssh -W %h:%p -q labe-amoo"
+        rahbia-runner:
+          DISK_SIZE: 30
+          DATASTORE_NAME: SSD-SAMSUNG-4T-1
+          MEMORY_SIZE: 4096
+          CPU_SIZE: 2
+          IP_ADDRESS: 192.168.200.102
           VM_FOLDER: RahBia-Live-Coding
           SSH_JUMP: "ssh -W %h:%p -q labe-amoo"
