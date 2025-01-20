@@ -7,13 +7,6 @@ all:
       hosts:
         Rahbia-template:
         rahbia-services:
-          DISK_SIZE: 100
-          DATASTORE_NAME: SSD-SAMSUNG-4T-2
-          MEMORY_SIZE: 8192
-          CPU_SIZE: 4
-          IP_ADDRESS: 192.168.200.101
-          VM_FOLDER: RahBia-Live-Coding
-          SSH_JUMP: "ssh -W %h:%p -q labe-amoo"
         rahbia-runner:
           DISK_SIZE: 30
           DATASTORE_NAME: SSD-SAMSUNG-4T-1
