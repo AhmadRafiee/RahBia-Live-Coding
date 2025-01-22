@@ -1,0 +1,37 @@
+---
+- name: Setup nexus Service
+  import_tasks: nexus-setup.yml
+  tags:
+    - install_nexus
+    - setup_nexus
+
+- name: nexus config | delete repository
+  include_tasks: delete-repo.yml
+  loop: "{{ delete_repository }}"
+  loop_control:
+    loop_var: item
+  tags:
+    - setup_nexus
+    - config_nexus
+    - delete_repository
+
+- name: nexus config | create blob store
+  include_tasks: create-blob.yml
+  loop: "{{ create_blob }}"
+  loop_control:
+    loop_var: item
+  tags:
+    - setup_nexus
+    - config_nexus
+    - create_blob
+
+- name: nexus config | create apt repository
+  include_tasks: create-apt-repo.yml
+  loop: "{{ create_apt_repository }}"
+  loop_control:
+    loop_var: item
+  tags:
+    - setup_nexus
+    - config_nexus
+    - create_apt_repo
+

@@ -1,0 +1,6 @@
+- name: install and configuration nexus service
+  hosts: rahbia-services
+  become: true
+  gather_facts: true
+  roles:
+    - nexus_setup

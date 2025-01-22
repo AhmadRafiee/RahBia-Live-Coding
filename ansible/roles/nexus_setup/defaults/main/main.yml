@@ -1,0 +1,30 @@
+---
+service_dir: "{{ project_dir }}/nexus"
+
+# nexus image tag
+nexus_image_tag: 3.76.0
+
+# minio domain
+nexus_main_domain: "repo.{{ main_domain }}"
+nexus_main_url: "https://{{ nexus_main_domain }}"
+nexus_hub_domain: "hub.{{ main_domain }}"
+
+
+delete_repository:
+  - maven-snapshots
+  - maven-central
+  - nuget-hosted
+  - maven-releases
+  - nuget-group
+  - nuget.org-proxy
+
+create_blob:
+  - apt
+  - docker
+  - raw
+
+create_apt_repository:
+  - name: "ubuntu-focal-proxy"
+    remote_url: "http://archive.ubuntu.com/ubuntu/"
+    distribution: "focal"
+    blob: "apt"

@@ -1,0 +1,30 @@
+---
+- name: Check if the repository exists
+  uri:
+    url: "{{ nexus_main_url }}/service/rest/v1/repositories/{{ item }}"
+    method: GET
+    user: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    force_basic_auth: yes
+    status_code: 200
+  register: repo_check_response
+  failed_when: repo_check_response.status != 200
+  ignore_errors: true
+  tags:
+    - config_nexus
+    - delete_repository
+    - setup_nexus
+
+- name: Delete the repository if it exists
+  uri:
+    url: "{{ nexus_main_url }}/service/rest/v1/repositories/{{ item }}"
+    method: DELETE
+    user: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    force_basic_auth: yes
+    status_code: 204
+  when: repo_check_response.status == 200
+  tags:
+    - config_nexus
+    - delete_repository
+    - setup_nexus

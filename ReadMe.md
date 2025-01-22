@@ -43,6 +43,7 @@ Below is a list of the sessions we've already completed in the RahBia Live Codin
   - **[Session 09:](2025-Sessions/Session-09-01-January.md)** Setup and config gitlab services with docker and ansible
   - **[Session 10:](2025-Sessions/Session-10-08-January.md)** We’ll finalize the GitLab service setup
   - **[Session 11:](2025-Sessions/Session-11-15-January.md)** Finalize the GitLab service setup
+  - **[Session 12:](2025-Sessions/Session-12-22-January.md)** the Nexus service setup
 
 
 Feel free to check out the session's detailed steps and resources in the respective session folders. We’ll keep updating this list as we progress through more advanced topics in DevOps.
@@ -81,6 +82,14 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
       - [x] encrypt backup file
       - [x] create cron tab for gitlab backup
   - [ ] Set up Nexus on Docker to continue the project
+      - [ ] change nexus password
+      - [ ] config anonymous
+      - [ ] change Realms
+      - [ ] create user | role | assign
+      - [ ] create docker blob store | repository | cleanup policy
+      - [ ] create apt blob store | repository | cleanup policy
+      - [ ] create raw blob store | repository | cleanup policy
+      - [ ] create pipy blob store | repository | cleanup policy
   - [x] Set up Traefik on Docker to continue the project
   - [x] Set up MinIo on Docker to continue the project
     - [x] create bucket
