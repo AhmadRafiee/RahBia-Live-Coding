@@ -1,23 +1,23 @@
 ---
-- name: Check if the repository exists
+- name: Check if the repository exists | docker repository
   uri:
-    url: "{{ nexus_main_url }}/service/rest/v1/repositories/{{ item.name }}"
+    url: "{{ nexus_main_url }}/service/rest/v1/repositories/docker/proxy/{{ item.name }}"
     method: GET
     user: "{{ nexus_username }}"
     password: "{{ nexus_password }}"
     force_basic_auth: yes
     status_code: 200
-  register: repo_check_response
-  failed_when: repo_check_response.status != 200
+  register: docker_repo_check_response
+  failed_when: docker_repo_check_response.status != 200
   ignore_errors: true
   tags:
     - setup_nexus
     - config_nexus
-    - create_apt_repo
+    - create_docker_repo
 
-- name: Create APT proxy repositories
+- name: Create Docker proxy repositories
   uri:
-    url: "{{ nexus_main_url }}/service/rest/v1/repositories/apt/proxy"
+    url: "{{ nexus_main_url }}/service/rest/v1/repositories/docker/proxy"
     user: "{{ nexus_username }}"
     password: "{{ nexus_password }}"
     method: POST
@@ -35,11 +35,9 @@
           "strictContentTypeValidation": true
         },
         "cleanup": {
-          "policyNames": ["{{ item.cleanup_policy }}"]
-        },
-        "apt": {
-          "distribution": "{{ item.distribution }}",
-          "flat": true
+          "policyNames": [
+            "{{ item.cleanup_policy }}"
+          ]
         },
         "proxy": {
           "remoteUrl": "{{ item.remote_url }}",
@@ -53,18 +51,21 @@
         "httpClient": {
           "blocked": false,
           "autoBlock": false,
-          "connection": {
-            "retries": "",
-            "userAgentSuffix": "",
-            "timeout": "",
-            "enableCircularRedirects": false,
-            "enableCookies": false
-          }
         },
-        "routingRule": "string"
+        "docker": {
+          "v1Enabled": true,
+          "forceBasicAuth": false,
+          "httpPort": "{{ item.repo_port }}",
+          "httpsPort": "",
+          "subdomain": "docker-a"
+        },
+        "dockerProxy": {
+          "indexType": "{{ item.index_type}}",
+        }
       }
-  when: repo_check_response.status != 200
+  when: docker_repo_check_response.status != 200
   tags:
     - setup_nexus
     - config_nexus
-    - create_apt_repo
+    - create_docker_repo
+

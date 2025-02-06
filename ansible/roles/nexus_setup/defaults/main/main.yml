@@ -9,7 +9,6 @@ nexus_main_domain: "repo.{{ main_domain }}"
 nexus_main_url: "https://{{ nexus_main_domain }}"
 nexus_hub_domain: "hub.{{ main_domain }}"
 
-
 delete_repository:
   - maven-snapshots
   - maven-central
@@ -23,8 +22,101 @@ create_blob:
   - docker
   - raw
 
+anonymous_config:
+  enabled: true
+  userId: anonymous
+  realmName: NexusAuthorizingRealm
+
+
 create_apt_repository:
-  - name: "ubuntu-focal-proxy"
-    remote_url: "http://archive.ubuntu.com/ubuntu/"
-    distribution: "focal"
+  - name: "ubuntu"
+    remote_url: "http://archive.ubuntu.com/ubuntu"
+    distribution: "jammy,jammy-updates,jammy-backports,focal"
     blob: "apt"
+    cleanup_policy: "docker"
+
+  - name: "ubuntu-docker"
+    remote_url: "https://download.docker.com/linux/ubuntu"
+    distribution: "jammy"
+    blob: "apt"
+    cleanup_policy: "docker"
+
+  - name: "ubuntu-security"
+    remote_url: "http://security.ubuntu.com/ubuntu"
+    distribution: "jammy-security"
+    blob: "apt"
+    cleanup_policy: "docker"
+
+  - name: "debian-docker"
+    remote_url: "https://download.docker.com/linux/debian/"
+    distribution: "bookworm"
+    blob: "apt"
+    cleanup_policy: "docker"
+
+  - name: "debian-security"
+    remote_url: "https://security.debian.org"
+    distribution: "bookworm-security"
+    blob: "apt"
+    cleanup_policy: "docker"
+
+  - name: "debian"
+    remote_url: "https://deb.debian.org/debian"
+    distribution: "bookworm,bookworm-backports,bookworm-updates"
+    blob: "apt"
+    cleanup_policy: "docker"
+
+create_docker_repository:
+  - name: "hub"
+    blob: "docker"
+    cleanup_policy: "docker"
+    remote_url: "https://hub.hamdocker.ir"
+    repo_port: "9091"
+    index_type: "HUB"
+
+  - name: "quay"
+    blob: "docker"
+    cleanup_policy: "docker"
+    remote_url: "https://quay.io"
+    repo_port: "9092"
+    index_type: "REGISTRY"
+
+  - name: "k8s"
+    blob: "docker"
+    cleanup_policy: "docker"
+    remote_url: "https://registry.k8s.io"
+    repo_port: "9093"
+    index_type: "REGISTRY"
+
+  - name: "gcr"
+    blob: "docker"
+    cleanup_policy: "docker"
+    remote_url: "https://gcr.io"
+    repo_port: "9094"
+    index_type: "REGISTRY"
+
+  - name: "k8s-gcr"
+    blob: "docker"
+    cleanup_policy: "docker"
+    remote_url: "https://k8s.gcr.io"
+    repo_port: "9095"
+    index_type: "REGISTRY"
+
+  - name: "github"
+    blob: "docker"
+    cleanup_policy: "docker"
+    remote_url: "https://ghcr.io"
+    repo_port: "9096"
+    index_type: "REGISTRY"
+
+create_raw_repository:
+  - name: "kube"
+    blob: "raw"
+    cleanup_policy: "raw"
+    remote_url: "https://files.m.daocloud.io"
+    content_disposition: "INLINE"
+
+create_pypi_repository:
+  - name: "pypi"
+    blob: "raw"
+    cleanup_policy: "pypi"
+    remote_url: "https://pypi.org/"

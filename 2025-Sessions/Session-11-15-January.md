@@ -2,16 +2,22 @@
 # Rahbia Live Coding
 ### Organized by DockerMe group
   - **Speaker:** [Ahmad Rafiee](https://www.linkedin.com/in/ahmad-rafiee)
-  - **Date:** 22 January 2025
-  - **Number of Sessions:** 12 (Session 12)
+  - **Date:** 15 January 2025
+  - **Number of Sessions:** 11 (Session 11)
 
 ### Video Link:
-[![YouTube](http://i.ytimg.com/vi/cIQ2cOHitiY/hqdefault.jpg)](https://www.youtube.com/live/cIQ2cOHitiY)
+[![YouTube](http://i.ytimg.com/vi/yNSlBzg1rtU/hqdefault.jpg)](https://www.youtube.com/live/yNSlBzg1rtU)
 
-### 🔴 Live Coding Session 12: Nexus Setup
-This repository contains an Ansible playbook designed to automate the installation and configuration of Nexus Repository Manager. Nexus is a powerful tool for managing software components and their distribution.
+### 🔴 Live Coding Session 11: Finalizing GitLab Setup
+In this session, we wrapped up the final configurations for GitLab and focused on critical tasks to ensure the service is fully operational and secure. Here’s what we accomplished:
 
+  **Backup Script Creation:** Developed a comprehensive backup script to safeguard GitLab data.
+  **Backup Encryption:** Configured encryption for backup files to enhance data security.
+  **GitLab Runner Setup:** Created and registered a GitLab Runner to enable CI/CD workflows.
+  **GitLab Finalization:** Completed all pending configurations, ensuring GitLab is ready for production use.
 
+**💡 Key Takeaway:**
+This session was all about tying up loose ends and preparing GitLab for real-world application. With a robust backup system and CI/CD capabilities in place, we’re all set!
 
 If you missed the live session, you can always catch up via the recording. Don’t forget to leave your feedback and let us know what you’d like to see in future sessions! 🚀
 

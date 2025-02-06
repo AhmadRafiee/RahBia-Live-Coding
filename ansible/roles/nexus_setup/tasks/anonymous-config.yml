@@ -1,0 +1,38 @@
+---
+- name: Check anonymous config
+  uri:
+    url: "{{ nexus_main_url }}/service/rest/v1/security/anonymous"
+    method: GET
+    user: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    force_basic_auth: yes
+    status_code: 200
+  register: anonymous_check_response
+  tags:
+    - setup_nexus
+    - config_nexus
+    - anonymous_config
+
+- name: Create Raw proxy repositories
+  uri:
+    url: "{{ nexus_main_url }}/service/rest/v1/security/anonymous"
+    user: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    method: PUT
+    force_basic_auth: yes
+    status_code: 200
+    body_format: json
+    headers:
+      Content-Type: "application/json"
+    body: >-
+      {
+        "enabled": "{{ anonymous_config.enabled }}",
+        "userId": "{{ anonymous_config.userId }}",
+        "realmName": "{{ anonymous_config.realmName }}"
+      }
+  when: anonymous_check_response.json.enabled == false
+
+  tags:
+    - setup_nexus
+    - config_nexus
+    - anonymous_config

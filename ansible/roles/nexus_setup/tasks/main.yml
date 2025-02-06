@@ -15,6 +15,20 @@
     - config_nexus
     - delete_repository
 
+- name: nexus config | anonymous config
+  include_tasks: anonymous-config.yml
+  tags:
+    - setup_nexus
+    - config_nexus
+    - anonymous_config
+
+- name: nexus config | realms config
+  include_tasks: realms-config.yml
+  tags:
+    - setup_nexus
+    - config_nexus
+    - realms_config
+
 - name: nexus config | create blob store
   include_tasks: create-blob.yml
   loop: "{{ create_blob }}"
@@ -35,3 +49,32 @@
     - config_nexus
     - create_apt_repo
 
+- name: nexus config | create docker repository
+  include_tasks: create-docker-repo.yml
+  loop: "{{ create_docker_repository }}"
+  loop_control:
+    loop_var: item
+  tags:
+    - setup_nexus
+    - config_nexus
+    - create_docker_repo
+
+- name: nexus config | create raw repository
+  include_tasks: create-raw-repo.yml
+  loop: "{{ create_raw_repository }}"
+  loop_control:
+    loop_var: item
+  tags:
+    - setup_nexus
+    - config_nexus
+    - create_raw_repo
+
+- name: nexus config | create pypi repository
+  include_tasks: create-pypi-repo.yml
+  loop: "{{ create_pypi_repository }}"
+  loop_control:
+    loop_var: item
+  tags:
+    - setup_nexus
+    - config_nexus
+    - create_pypi_repo

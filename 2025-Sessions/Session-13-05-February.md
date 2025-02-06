@@ -2,15 +2,27 @@
 # Rahbia Live Coding
 ### Organized by DockerMe group
   - **Speaker:** [Ahmad Rafiee](https://www.linkedin.com/in/ahmad-rafiee)
-  - **Date:** 22 January 2025
-  - **Number of Sessions:** 12 (Session 12)
+  - **Date:** 05 February 2025
+  - **Number of Sessions:** 13 (Session 13)
 
 ### Video Link:
-[![YouTube](http://i.ytimg.com/vi/cIQ2cOHitiY/hqdefault.jpg)](https://www.youtube.com/live/cIQ2cOHitiY)
+[![YouTube](http://i.ytimg.com/vi/znx36s_lTk8/hqdefault.jpg)](https://www.youtube.com/live/znx36s_lTk8)
 
-### 🔴 Live Coding Session 12: Nexus Setup
-This repository contains an Ansible playbook designed to automate the installation and configuration of Nexus Repository Manager. Nexus is a powerful tool for managing software components and their distribution.
+### 🔴 Live Coding Session 13: Automated Nexus Repository Configuration with Ansible
 
+In this live coding session, we continued configuring Sonatype Nexus and automated the setup of various repository types (APT, Docker, Raw, etc.) using Ansible. The goal was to create a repeatable and scalable configuration that allows easy repository creation and management.
+
+Features
+  - Automated repository creation using Ansible
+  - Support for multiple repository types:
+    - **APT** (for Debian-based package management)
+    - **Docker** (for container image storage)
+    - **Raw** (for general-purpose storage)
+    - **pypi** (for python packages)
+  - Idempotent configuration ensuring repositories are created only when necessary
+  - Easily extendable for future repository types
+
+**💡 Key Takeaway:**
 If you missed the live session, you can always catch up via the recording. Don’t forget to leave your feedback and let us know what you’d like to see in future sessions! 🚀
 
 ## 🔗 Links
