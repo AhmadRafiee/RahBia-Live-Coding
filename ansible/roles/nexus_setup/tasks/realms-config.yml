@@ -15,7 +15,8 @@
 
 - name: Debug DockerToken if found
   debug:
-    msg: "{{ realms_check_response.json.DockerToken }}"
+    msg: "{{ realms_check_response.json }}"
+  when: "'DockerToken' not in realms_check_response.json"
   tags:
     - setup_nexus
     - config_nexus
@@ -37,8 +38,7 @@
         "NexusAuthenticatingRealm",
         "DockerToken"
       ]
-  #when: realms_check_response.json.DockerToken is not defined
-
+  when: "'DockerToken' not in realms_check_response.json"
   tags:
     - setup_nexus
     - config_nexus
