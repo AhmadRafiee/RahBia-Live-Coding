@@ -31,7 +31,6 @@
         "realmName": "{{ anonymous_config.realmName }}"
       }
   when: anonymous_check_response.json.enabled == false
-
   tags:
     - setup_nexus
     - config_nexus

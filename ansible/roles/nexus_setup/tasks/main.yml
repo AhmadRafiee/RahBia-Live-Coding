@@ -29,6 +29,13 @@
     - config_nexus
     - realms_config
 
+- name: nexus config | role and user config
+  include_tasks: auth-config.yml
+  tags:
+    - setup_nexus
+    - config_nexus
+    - auth_config
+
 - name: nexus config | create blob store
   include_tasks: create-blob.yml
   loop: "{{ create_blob }}"

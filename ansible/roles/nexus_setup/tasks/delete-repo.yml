@@ -8,7 +8,7 @@
     force_basic_auth: yes
     status_code: 200
   register: repo_check_response
-  failed_when: repo_check_response.status != 200
+  failed_when: repo_check_response.status not in [200, 404]
   ignore_errors: true
   tags:
     - config_nexus

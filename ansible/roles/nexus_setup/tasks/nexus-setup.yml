@@ -36,8 +36,8 @@
     - preparing
 
 - name: Copy file with owner and permissions
-  ansible.builtin.copy:
-    src: compose.yml
+  ansible.builtin.template:
+    src: compose.yml.j2
     dest: "{{ service_dir }}/compose.yml"
   tags:
     - preparing
@@ -60,3 +60,14 @@
     project_src: "{{ service_dir }}"
   tags:
     - deploy
+
+- name: Wait for Nexus to be available
+  uri:
+    url: "{{ nexus_main_url }}/service/rest/v1/status"
+    method: GET
+    status_code: 200
+    timeout: 10
+  register: result
+  until: result.status == 200
+  retries: 20
+  delay: 10

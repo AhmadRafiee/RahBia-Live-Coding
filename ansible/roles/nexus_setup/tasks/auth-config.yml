@@ -1,0 +1,104 @@
+---
+- name: Check role list
+  uri:
+    url: "{{ nexus_main_url }}/service/rest/v1/security/roles"
+    user: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    method: GET
+    force_basic_auth: yes
+    status_code: 200
+  register: role_check_response
+  tags:
+    - setup_nexus
+    - config_nexus
+    - auth_config
+
+- name: Debug role "{{ role.id }}" if found
+  debug:
+    msg: "{{ role_check_response.json }}"
+  when: role_check_response.json | selectattr('id', 'equalto', "{{ role.id }}") | list | length == 0
+  tags:
+    - setup_nexus
+    - config_nexus
+    - auth_config
+
+- name: Create nexus role
+  uri:
+    url: "{{ nexus_main_url }}/service/rest/v1/security/roles"
+    user: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    method: POST
+    force_basic_auth: yes
+    status_code: 200
+    body_format: json
+    headers:
+      Content-Type: "application/json"
+    body: >-
+      {
+      "id": "{{ role.id }}",
+      "name": "{{ role.name }}",
+      "description": "{{ role.description }}",
+      "privileges": [
+        "{{ role.privileges }}"
+      ],
+      "roles": [
+        "{{ role.roles }}"
+      ]
+      }
+  when: role_check_response.json | selectattr('id', 'equalto', "{{ role.id }}") | list | length == 0
+  tags:
+    - setup_nexus
+    - config_nexus
+    - auth_config
+
+- name: Check user list
+  uri:
+    url: "{{ nexus_main_url }}/service/rest/v1/security/users"
+    user: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    method: GET
+    force_basic_auth: yes
+    status_code: 200
+  register: user_check_response
+  tags:
+    - setup_nexus
+    - config_nexus
+    - auth_config
+
+- name: Debug user repo if found
+  debug:
+    msg: "{{ user_check_response.json }}"
+  when: user_check_response.json | selectattr('userId', 'equalto', "{{ user.id }}") | list | length == 0
+  tags:
+    - setup_nexus
+    - config_nexus
+    - auth_config
+
+- name: Create nexus user
+  uri:
+    url: "{{ nexus_main_url }}/service/rest/v1/security/users"
+    user: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    method: POST
+    force_basic_auth: yes
+    status_code: 200
+    body_format: json
+    headers:
+      Content-Type: "application/json"
+    body: >-
+      {
+      "userId": "{{ user.id }}",
+      "firstName": "{{ user.first_name }}",
+      "lastName": "{{ user.last_name }}",
+      "emailAddress": "{{ user.email_address }}",
+      "password": "{{ other_user_password }}",
+      "status": "{{ user.status }}",
+      "roles": [
+        "{{ user.roles_name }}"
+      ]
+      }
+  when: user_check_response.json | selectattr('userId', 'equalto', "{{ user.id }}") | list | length == 0
+  tags:
+    - setup_nexus
+    - config_nexus
+    - auth_config

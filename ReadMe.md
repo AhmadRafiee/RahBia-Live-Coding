@@ -45,9 +45,9 @@ Below is a list of the sessions we've already completed in the RahBia Live Codin
   - **[Session 11:](2025-Sessions/Session-11-15-January.md)** Finalize the GitLab service setup
   - **[Session 12:](2025-Sessions/Session-12-22-January.md)** the Nexus service setup
   - **[Session 13:](2025-Sessions/Session-13-05-February.md)** Automated Nexus Repository Configuration with Ansible
+  - **[Session 14:](2025-Sessions/Session-14-12-February.md)** Nexus Configuration and Traefik Setup
 
 Feel free to check out the session's detailed steps and resources in the respective session folders. We’ll keep updating this list as we progress through more advanced topics in DevOps.
-
 
 ### Here’s What We’ll Be Doing:
 Below is a list of the tasks and topics we’ll be covering in this series. This list is not fixed—it will evolve over time as we dive deeper into the world of DevOps and tackle new challenges together. Stay tuned for updates as we progress!
@@ -81,12 +81,12 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
       - [x] move and put to minio
       - [x] encrypt backup file
       - [x] create cron tab for gitlab backup
-  - [ ] Set up Nexus on Docker to continue the project
-      - [ ] change nexus password
+  - [x] Set up Nexus on Docker to continue the project
+      - [x] change nexus password
       - [x] config anonymous
-      - [ ] change Realms
-      - [ ] create user | role | assign
-      - [ ] create docker proxy traefik config
+      - [x] change Realms
+      - [x] create user | role | assign
+      - [x] create docker proxy traefik config
       - [x] create docker blob store | repository | cleanup policy
       - [x] create apt blob store | repository | cleanup policy
       - [x] create raw blob store | repository | cleanup policy
@@ -97,7 +97,7 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
     - [ ] create user
     - [ ] create policy
     - [ ] match user with policy
-  - [ ] Write an Ansible playbook to automate all tasks completed so far
+  - [x] Write an Ansible playbook to automate all tasks completed so far
   - [ ] Draw a High-Level Design (HLD) diagram of the services built and the path taken
   - [ ] Review Dockerfiles, build images and push them to a registry
   - [ ] Write a Compose file to containerize the project setup

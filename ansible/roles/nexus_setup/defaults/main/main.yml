@@ -2,15 +2,15 @@
 service_dir: "{{ project_dir }}/nexus"
 
 # nexus image tag
-nexus_image_tag: 3.76.0
+nexus_image_tag: 3.77.1
 
 # minio domain
 nexus_main_domain: "repo.{{ main_domain }}"
 nexus_main_url: "https://{{ nexus_main_domain }}"
-nexus_hub_domain: "hub.{{ main_domain }}"
 
 delete_repository:
   - maven-snapshots
+  - maven-public
   - maven-central
   - nuget-hosted
   - maven-releases
@@ -27,6 +27,20 @@ anonymous_config:
   userId: anonymous
   realmName: NexusAuthorizingRealm
 
+role:
+  id: repo_admin
+  name: repo_admin
+  description: repository admin
+  privileges: nx-repository-admin-*-*-*
+  roles: nx-anonymous
+
+user:
+  id: repo
+  first_name: repo
+  last_name: repo
+  email_address: repo@RahBia.ir
+  status: active
+  roles_name: repo_admin
 
 create_apt_repository:
   - name: "ubuntu"
@@ -72,6 +86,7 @@ create_docker_repository:
     remote_url: "https://hub.hamdocker.ir"
     repo_port: "9091"
     index_type: "HUB"
+    repo_domain: "hub.{{ main_domain }}"
 
   - name: "quay"
     blob: "docker"
@@ -79,6 +94,7 @@ create_docker_repository:
     remote_url: "https://quay.io"
     repo_port: "9092"
     index_type: "REGISTRY"
+    repo_domain: "quay.{{ main_domain }}"
 
   - name: "k8s"
     blob: "docker"
@@ -86,6 +102,7 @@ create_docker_repository:
     remote_url: "https://registry.k8s.io"
     repo_port: "9093"
     index_type: "REGISTRY"
+    repo_domain: "k8s.{{ main_domain }}"
 
   - name: "gcr"
     blob: "docker"
@@ -93,6 +110,7 @@ create_docker_repository:
     remote_url: "https://gcr.io"
     repo_port: "9094"
     index_type: "REGISTRY"
+    repo_domain: "gcr.{{ main_domain }}"
 
   - name: "k8s-gcr"
     blob: "docker"
@@ -100,6 +118,7 @@ create_docker_repository:
     remote_url: "https://k8s.gcr.io"
     repo_port: "9095"
     index_type: "REGISTRY"
+    repo_domain: "k8s-gcr.{{ main_domain }}"
 
   - name: "github"
     blob: "docker"
@@ -107,6 +126,7 @@ create_docker_repository:
     remote_url: "https://ghcr.io"
     repo_port: "9096"
     index_type: "REGISTRY"
+    repo_domain: "github.{{ main_domain }}"
 
 create_raw_repository:
   - name: "kube"
