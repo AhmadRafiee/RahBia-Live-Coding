@@ -52,9 +52,7 @@ Feel free to check out the session's detailed steps and resources in the respect
 ### Here’s What We’ll Be Doing:
 Below is a list of the tasks and topics we’ll be covering in this series. This list is not fixed—it will evolve over time as we dive deeper into the world of DevOps and tackle new challenges together. Stay tuned for updates as we progress!
 
-<details>
-  <summary>All Steps List</summary>
-
+#### All Steps List:
   - [x] Explain the live coding video path
     - [x] Project introduction and code review (Voting app)
     - [x] Infrastructure overview (VMware, Debian OS)
@@ -99,13 +97,13 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
     - [ ] match user with policy
   - [x] Write an Ansible playbook to automate all tasks completed so far
   - [ ] Draw a High-Level Design (HLD) diagram of the services built and the path taken
-  - [ ] Review Dockerfiles, build images and push them to a registry
-  - [ ] Write a Compose file to containerize the project setup
+  - [ ] Review voting project Dockerfiles, build images and push them to a registry
+  - [ ] Write a Compose file to containerize the voting project setup
   - [ ] Add environment variables for configurable project settings
   - [ ] Use Traefik as a reverse proxy for the entire project
-  - [ ] Use Nginx as a reverse proxy for the entire project
   - [ ] Draw an HLD diagram for the services created and the path followed
   - [ ] Write CI/CD for the project with deployment to 3 different environments with unique configurations
+  - [ ] create sonarqube service for test
   - [ ] Write tests for services using SonarQube
   - [ ] Write tests for services using Trivy Scanner
   - [ ] Perform load testing on the services with ab
@@ -193,8 +191,6 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
   - [ ] Add nodes to the OpenStack cluster
   - [ ] Simulate incidents within the OpenStack cluster
   - [ ] Set up end-to-end testing for OpenStack with rally project
-
-</details>
 
 ### License
 This project is licensed under the Apache-2.0 License. See the [LICENSE](LICENSE) file for more details.
