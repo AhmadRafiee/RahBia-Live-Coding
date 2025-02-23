@@ -8,7 +8,7 @@
 ### Video Link:
 [![YouTube](http://i.ytimg.com/vi/3CY96uLSwJU/hqdefault.jpg)](https://www.youtube.com/live/3CY96uLSwJU)
 
-### 🔴 Live Coding Session 15: Design and deploy voting app on docker
+### 🔴 Live Coding Session 15: Voting App Deployment on Docker
 
 In Live Coding Session 15, we designed and deployed a Voting App on Docker. This application consists of multiple services, and we progressed up to the image build phase, utilizing the services we had previously set up.
 

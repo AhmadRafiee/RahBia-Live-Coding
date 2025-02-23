@@ -46,6 +46,7 @@ Below is a list of the sessions we've already completed in the RahBia Live Codin
   - **[Session 12:](2025-Sessions/Session-12-22-January.md)** the Nexus service setup
   - **[Session 13:](2025-Sessions/Session-13-05-February.md)** Automated Nexus Repository Configuration with Ansible
   - **[Session 14:](2025-Sessions/Session-14-12-February.md)** Nexus Configuration and Traefik Setup
+  - **[Session 15:](2025-Sessions/Session-15-19-February.md)** Voting App Deployment on Docker
 
 Feel free to check out the session's detailed steps and resources in the respective session folders. We’ll keep updating this list as we progress through more advanced topics in DevOps.
 
