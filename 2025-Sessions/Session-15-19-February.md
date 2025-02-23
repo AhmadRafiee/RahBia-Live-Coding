@@ -28,6 +28,9 @@ The Voting App consists of the following components:
 ✅ Create Compose file for build and push all service images
 ✅ Create Compose file setup and configure service
 
+**Draw a High-Level Design (HLD) diagram of the services built and the path taken**
+![HLD](../images/RahBia-App-V1.png)
+
 #### 📌 Next Steps
 In the upcoming sessions, we will focus on full deployment with Docker Compose, managing networking and volumes, and ensuring a stable deployment.
 

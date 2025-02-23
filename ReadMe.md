@@ -96,8 +96,8 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
     - [ ] create policy
     - [ ] match user with policy
   - [x] Write an Ansible playbook to automate all tasks completed so far
-  - [ ] Draw a High-Level Design (HLD) diagram of the services built and the path taken
-  - [ ] Review voting project Dockerfiles, build images and push them to a registry
+  - [x] Draw a High-Level Design (HLD) diagram of the services built and the path taken
+  - [x] Review voting project Dockerfiles, build images and push them to a registry
   - [ ] Write a Compose file to containerize the voting project setup
   - [ ] Add environment variables for configurable project settings
   - [ ] Use Traefik as a reverse proxy for the entire project
