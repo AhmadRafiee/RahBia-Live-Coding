@@ -47,6 +47,7 @@ Below is a list of the sessions we've already completed in the RahBia Live Codin
   - **[Session 13:](2025-Sessions/Session-13-05-February.md)** Automated Nexus Repository Configuration with Ansible
   - **[Session 14:](2025-Sessions/Session-14-12-February.md)** Nexus Configuration and Traefik Setup
   - **[Session 15:](2025-Sessions/Session-15-19-February.md)** Voting App Deployment on Docker
+  - **[Session 16:](2025-Sessions/Session-16-26-February.md)** Voting App Deployment on Docker with gitlab CI/CD
 
 Feel free to check out the session's detailed steps and resources in the respective session folders. We’ll keep updating this list as we progress through more advanced topics in DevOps.
 
@@ -99,10 +100,10 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
   - [x] Write an Ansible playbook to automate all tasks completed so far
   - [x] Draw a High-Level Design (HLD) diagram of the services built and the path taken
   - [x] Review voting project Dockerfiles, build images and push them to a registry
-  - [ ] Write a Compose file to containerize the voting project setup
+  - [x] Write a Compose file to containerize the voting project setup
   - [ ] Add environment variables for configurable project settings
-  - [ ] Use Traefik as a reverse proxy for the entire project
-  - [ ] Draw an HLD diagram for the services created and the path followed
+  - [x] Use Traefik as a reverse proxy for the entire project
+  - [x] Draw an HLD diagram for the services created and the path followed
   - [ ] Write CI/CD for the project with deployment to 3 different environments with unique configurations
   - [ ] create sonarqube service for test
   - [ ] Write tests for services using SonarQube

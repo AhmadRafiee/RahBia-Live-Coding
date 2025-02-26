@@ -2,17 +2,18 @@
 # Rahbia Live Coding
 ### Organized by DockerMe group
   - **Speaker:** [Ahmad Rafiee](https://www.linkedin.com/in/ahmad-rafiee)
-  - **Date:** 19 February 2025
-  - **Number of Sessions:** 15 (Session 15)
+  - **Date:** 26 February 2025
+  - **Number of Sessions:** 16 (Session 16)
 
 ### Video Link:
-[![YouTube](http://i.ytimg.com/vi/3CY96uLSwJU/hqdefault.jpg)](https://www.youtube.com/live/3CY96uLSwJU)
+[![YouTube](http://i.ytimg.com/vi/ImpTF_Bm7_k/hqdefault.jpg)](https://www.youtube.com/live/ImpTF_Bm7_k)
 
 ### 🔴 Live Coding Session 15: Voting App Deployment on Docker
 
-In Live Coding Session 15, we designed and deployed a Voting App on Docker. This application consists of multiple services, and we progressed up to the image build phase, utilizing the services we had previously set up.
+In Live Coding Session 16, This Session contains the deployment process of the Voting App using a traditional method, followed by an automated CI/CD pipeline for build and testing.
 
 #### 📌 Application Architecture
+The Voting App consists of multiple microservices that handle voting, result tallying, and backend operations. Initially, the deployment was done manually, and later, we implemented CI/CD pipelines to streamline the build and test process.
 The Voting App consists of the following components:
 
   - **Frontend**: User interface for voting
@@ -21,6 +22,27 @@ The Voting App consists of the following components:
   - **Queue (Redis)**: Handles request queuing
   - **Worker**: Processes voting data
 
+
+#### Technologies Used
+
+  - **Docker:** Containerization of services
+  - **Ansible:** Automation of deployment
+  - **GitLab CI/CD:** Pipeline implementation for build and test automation
+  - **Traefik:** Reverse proxy and load balancing
+  - **PostgreSQL:** Database backend
+  - **Redis:** In-memory data store for caching and messaging
+
+#### Deployment Steps
+  1. Traditional Deployment
+    - Manually set up services using Docker Compose.
+    - Configured database and cache layers.
+    - Verified manual deployment.
+  2. CI/CD Implementation
+    - Defined GitLab CI/CD pipeline for automated builds.
+    - Implemented testing stages before deployment.
+    - Automated service deployment using Ansible.
+
+
 #### 🚀 Completed Steps
 ✅ Designed the Voting App Architecture
 ✅ Change Dockerfiles for each service
@@ -28,8 +50,8 @@ The Voting App consists of the following components:
 ✅ Create Compose file for build and push all service images
 ✅ Create Compose file setup and configure service
 
-**Draw a High-Level Design (HLD) diagram of the services built and the path taken**
-![HLD](../images/RahBia-App-V1.png)
+**Draw a High-Level Design (HLD) diagram of pipeline**
+![HLD](../images/RahBia_app_Pipeline.png)
 
 #### 📌 Next Steps
 In the upcoming sessions, we will focus on full deployment with Docker Compose, managing networking and volumes, and ensuring a stable deployment.
