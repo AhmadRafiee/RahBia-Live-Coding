@@ -30,3 +30,19 @@ all:
           IP_ADDRESS: 192.168.200.103
           VM_FOLDER: RahBia-Live-Coding
           SSH_JUMP: "ssh -W %h:%p -q labe-amoo"
+        development:
+          DISK_SIZE: 30
+          DATASTORE_NAME: SSD-SAMSUNG-4T-2
+          MEMORY_SIZE: 4096
+          CPU_SIZE: 4
+          IP_ADDRESS: 192.168.200.104
+          VM_FOLDER: RahBia-Live-Coding
+          SSH_JUMP: "ssh -W %h:%p -q labe-amoo"
+        production:
+          DISK_SIZE: 30
+          DATASTORE_NAME: SSD-SAMSUNG-4T-2
+          MEMORY_SIZE: 4096
+          CPU_SIZE: 4
+          IP_ADDRESS: 192.168.200.105
+          VM_FOLDER: RahBia-Live-Coding
+          SSH_JUMP: "ssh -W %h:%p -q labe-amoo"

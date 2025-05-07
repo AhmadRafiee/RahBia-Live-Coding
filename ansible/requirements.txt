@@ -10,3 +10,4 @@ jmespath==1.0.1
 aar-doc==2.0.0
 ssh-keygen
 cryptography
+paramiko

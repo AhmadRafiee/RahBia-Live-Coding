@@ -48,6 +48,7 @@ Below is a list of the sessions we've already completed in the RahBia Live Codin
   - **[Session 14:](2025-Sessions/Session-14-12-February.md)** Nexus Configuration and Traefik Setup
   - **[Session 15:](2025-Sessions/Session-15-19-February.md)** Voting App Deployment on Docker
   - **[Session 16:](2025-Sessions/Session-16-26-February.md)** Voting App Deployment on Docker with gitlab CI/CD
+  - **[Session 17:](2025-Sessions/Session-17-06-May.md)** Voting App Deployment on Docker with gitlab CI/CD
 
 Feel free to check out the session's detailed steps and resources in the respective session folders. We’ll keep updating this list as we progress through more advanced topics in DevOps.
 
@@ -105,6 +106,10 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
   - [x] Use Traefik as a reverse proxy for the entire project
   - [x] Draw an HLD diagram for the services created and the path followed
   - [ ] Write CI/CD for the project with deployment to 3 different environments with unique configurations
+    - [x] Build stage
+    - [x] Test stage
+    - [x] Deploy to development
+    - [ ] Deploy to production
   - [ ] create sonarqube service for test
   - [ ] Write tests for services using SonarQube
   - [ ] Write tests for services using Trivy Scanner
