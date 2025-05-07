@@ -74,3 +74,9 @@ deploy-development:
   environment:
     name: development
     url: https://${vote_domain}.${main_domain}
+
+
+# Other Steps:
+# - add production deployment
+# - change build stages
+# - change test stage
