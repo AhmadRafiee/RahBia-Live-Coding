@@ -1,0 +1,36 @@
+name: voting-app-image
+
+networks:
+  app_net:
+    name: app_net
+    external: true
+
+services:
+  vote:
+    image: ${image_registry}/${image_repository}/vote:${image_version}
+    build:
+      context: ./vote
+      target: dev
+    networks:
+      - app_net
+
+  result:
+    image: ${image_registry}/${image_repository}/result:${image_version}
+    build:
+      context: ./result
+    networks:
+      - app_net
+
+  worker:
+    image: ${image_registry}/${image_repository}/worker:${image_version}
+    build:
+      context: ./worker
+    networks:
+      - app_net
+
+  seed:
+    image: ${image_registry}/${image_repository}/seed:${image_version}
+    build:
+      context: ./seed-data
+    networks:
+      - app_net

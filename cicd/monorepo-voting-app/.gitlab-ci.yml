@@ -1,0 +1,76 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  VERSION: v1.0.2
+  server_port: 8090
+  server_user: root
+  service_dir: /opt/service/voting-app
+
+build-job:
+  stage: build
+  image: docker:latest
+  before_script:
+    - docker login ${CI_REGISTRY} --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD}
+  script:
+    - sed -i s/IMAGE_VERSION/${VERSION}/g .env
+    - cat .env | grep image_version
+    - docker compose -f image-compose.yml build
+    - docker compose -f image-compose.yml push
+
+test-job:
+  stage: test
+  image: docker:latest
+  before_script:
+    - docker login ${CI_REGISTRY} --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD}
+  script:
+    - sed -i s/IMAGE_VERSION/${VERSION}/g .env
+    - cat .env | grep image_version
+    - docker compose pull
+    - docker compose up -d
+    - sleep 10
+  after_script:
+    - docker compose down -v
+
+deploy-development:
+  stage: deploy
+  image: alpine:latest
+  variables:
+    main_domain: dev.app.rahbia.ir
+    vote_domain: vote
+    result_domain: result
+    traefik_domain: tra
+    server_address: 192.168.200.104
+  before_script:
+    - 'command -v ssh-agent >/dev/null || ( apk add --update --no-cache openssh )'
+    - eval $(ssh-agent -s)
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+  script:
+    - |
+      sed -i s/IMAGE_VERSION/${VERSION}/g .env
+      sed -i s/DOMIAN_ADDRESS/${main_domain}/g .env
+      cat .env | grep image_version
+      
+      ssh -o StrictHostKeyChecking=no -p ${server_port} ${server_user}@${server_address} "
+      [[ -d ${service_dir} ]] || mkdir -p ${service_dir}
+      docker network ls | grep web_net || docker network create web_net
+      docker network ls | grep app_net || docker network create app_net
+      "
+
+      scp -o StrictHostKeyChecking=no -P${server_port} .env ${server_user}@${server_address}:${service_dir}/
+      scp -o StrictHostKeyChecking=no -P${server_port} compose.yml ${server_user}@${server_address}:${service_dir}/
+
+      ssh -o StrictHostKeyChecking=no -p ${server_port} ${server_user}@${server_address} "
+      docker login ${CI_REGISTRY} --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD}
+      cd ${service_dir}
+      docker compose pull 
+      docker compose up -d
+      "
+  environment:
+    name: development
+    url: https://${vote_domain}.${main_domain}

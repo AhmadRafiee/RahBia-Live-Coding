@@ -25,7 +25,6 @@ The Voting App consists of the following components:
   - **Queue (Redis)**: Handles request queuing
   - **Worker**: Processes voting data
 
-
 #### Technologies Used
 
   - **Docker:** Containerization of services
@@ -35,12 +34,70 @@ The Voting App consists of the following components:
   - **PostgreSQL:** Database backend
   - **Redis:** In-memory data store for caching and messaging
 
+
+#### 🚀 Project directory and `gitlab-ci` deployment section
+
+```bash
+cicd/monorepo-voting-app
+```
+
+deployment section on gitlab-ci
+
+```yaml
+deploy-development:
+  stage: deploy
+  image: alpine:latest
+  variables:
+    main_domain: dev.app.rahbia.ir
+    vote_domain: vote
+    result_domain: result
+    traefik_domain: tra
+    server_address: 192.168.200.104
+  before_script:
+    - 'command -v ssh-agent >/dev/null || ( apk add --update --no-cache openssh )'
+    - eval $(ssh-agent -s)
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+  script:
+    - |
+      sed -i s/IMAGE_VERSION/${VERSION}/g .env
+      sed -i s/DOMIAN_ADDRESS/${main_domain}/g .env
+      cat .env | grep image_version
+      
+      ssh -o StrictHostKeyChecking=no -p ${server_port} ${server_user}@${server_address} "
+      [[ -d ${service_dir} ]] || mkdir -p ${service_dir}
+      docker network ls | grep web_net || docker network create web_net
+      docker network ls | grep app_net || docker network create app_net
+      "
+
+      scp -o StrictHostKeyChecking=no -P${server_port} .env ${server_user}@${server_address}:${service_dir}/
+      scp -o StrictHostKeyChecking=no -P${server_port} compose.yml ${server_user}@${server_address}:${service_dir}/
+
+      ssh -o StrictHostKeyChecking=no -p ${server_port} ${server_user}@${server_address} "
+      docker login ${CI_REGISTRY} --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD}
+      cd ${service_dir}
+      docker compose pull 
+      docker compose up -d
+      "
+  environment:
+    name: development
+    url: https://${vote_domain}.${main_domain}
+```
+
+
+✅ Setup Development and production stage with Gitlab CI/CD
+
+
 #### Deployment Steps
+
   1. CI/CD Implementation
     - Automated service deployment using gitlab CI/CD.
 
 
 #### 🚀 Completed Steps
+
 ✅ Setup Development and production stage with Gitlab CI/CD
 
 **Draw a High-Level Design (HLD) diagram of pipeline**
