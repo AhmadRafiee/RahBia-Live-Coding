@@ -11,3 +11,4 @@ aar-doc==2.0.0
 ssh-keygen
 cryptography
 paramiko
+pyvmomi
