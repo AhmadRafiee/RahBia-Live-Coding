@@ -50,6 +50,7 @@ Below is a list of the sessions we've already completed in the RahBia Live Codin
   - **[Session 16:](2025-Sessions/Session-16-26-February.md)** Voting App Deployment on Docker with gitlab CI/CD
   - **[Session 17:](2025-Sessions/Session-17-06-May.md)** Voting App Deployment on Docker with gitlab CI/CD
   - **[Session 18:](2025-Sessions/Session-18-13-May.md)** Deploy to multiple environments and pipeline efficiency
+  - **[Session 19:](2025-Sessions/Session-19-20-May.md)** Container scanning with trivy, load test with ab and gitlab image cleanup policy
 
 Feel free to check out the session's detailed steps and resources in the respective session folders. We’ll keep updating this list as we progress through more advanced topics in DevOps.
 
@@ -111,14 +112,15 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
     - [x] Test stage
     - [x] Deploy to development
     - [x] Deploy to production
-    - [ ] container scanning with trivy
+    - [x] container scanning with trivy
     - [ ] add gitlab component and catalog
-    - [ ] add load test scenario
+    - [x] add load test scenario
     - [ ] create backup from database 
     - [ ] move backup to object storage
     - [ ] database backup test
-    - [ ] gitlab image clean up policy
+    - [x] gitlab image clean up policy
     - [ ] check gitlab backup
+  - [ ] update gitlab service
   - [ ] create sonarqube service for test
   - [ ] Write tests for services using SonarQube
   - [ ] Write tests for services using Trivy Scanner
