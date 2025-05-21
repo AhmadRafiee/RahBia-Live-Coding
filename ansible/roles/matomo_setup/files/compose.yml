@@ -1,0 +1,47 @@
+networks:
+  web_net:
+    name: web_net
+    external: true
+  app_net:
+    name: app_net
+    external: true
+
+volumes:
+  db_data:
+    name: db_data
+    external: false
+  matomo_data:
+    name: matomo_data
+    external: false
+
+services:
+  db:
+    image: mariadb:${db_image_tag}
+    command: --max-allowed-packet=64MB
+    restart: ${restart_policy}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - web_net
+      - app_net
+
+  matomo:
+    image: matomo:${matomo_image_tag}
+    restart: ${restart_policy}
+    volumes:
+      - matomo_data:/var/www/html
+    networks:
+      - web_net
+      - app_net
+    depends_on:
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.http-matomo.rule=Host(`${matomo_domain}`)"
+      - "traefik.http.routers.http-matomo.entrypoints=web"
+      - "traefik.http.routers.matomo.rule=Host(`${matomo_domain}`)"
+      - "traefik.http.routers.matomo.entrypoints=web-secure"
+      - "traefik.http.routers.matomo.tls=true"
+      - "traefik.http.routers.matomo.tls.certresolver=myresolver"
+      - "traefik.http.routers.matomo.service=matomo"
+      - "traefik.http.services.matomo.loadBalancer.server.port=80"

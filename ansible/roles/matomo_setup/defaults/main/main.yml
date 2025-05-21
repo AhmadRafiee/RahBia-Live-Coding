@@ -1,0 +1,11 @@
+---
+service_dir: "{{ project_dir }}/matomo"
+
+# DB image tag
+db_image_tag: 10.3
+
+# Matomo image tag
+matomo_image_tag: 5.2.2
+
+# Matomo Domain
+matomo_domain: "matomo.{{ main_domain }}"
