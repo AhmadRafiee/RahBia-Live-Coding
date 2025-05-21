@@ -120,7 +120,13 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
     - [ ] database backup test
     - [x] gitlab image clean up policy
     - [ ] check gitlab backup
-  - [ ] update gitlab service
+  - [ ] upgrade all services 
+    - [ ] update gitlab service
+    - [ ] update gitlab runner
+    - [ ] update minio service
+    - [ ] update nexus service
+    - [ ] update traefik service
+    - [ ] update and upgrade debian os
   - [ ] create sonarqube service for test
   - [ ] Write tests for services using SonarQube
   - [ ] Write tests for services using Trivy Scanner
