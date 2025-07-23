@@ -1,3 +1,95 @@
+
+# Rahbia Live Coding
+### Organized by DockerMe group
+  - **Speaker:** [Ahmad Rafiee](https://www.linkedin.com/in/ahmad-rafiee)
+  - **Date:** 23 July 2025
+  - **Number of Sessions:** 21 (Session 21)
+
+### Video Link:
+[![YouTube](http://i.ytimg.com/vi/yaWouJsR_-M/hqdefault.jpg)](https://www.youtube.com/live/yaWouJsR_-M)
+
+### 🔴 Live Coding Session 21: Backup and Restore Operations for Production PostgreSQL
+
+In Live Coding Session 21, This Session contains Backup and Restore Operations for Production PostgreSQL.
+
+This document outlines the procedures for backing up a production PostgreSQL database, transferring the backup to MinIO, and restoring it. It also covers the setup of dedicated MinIO accounts for secure backup management.
+
+## 🚀 Speeding Up Operations with a Custom Runner Image
+To significantly improve the speed and efficiency of our backup and restore workflows, we've created a specialized Docker image for our runners. This image is pre-configured with all necessary tools and dependencies, reducing setup time during job execution.
+
+## 💾 Production PostgreSQL Backup and MinIO Transfer
+We've established a robust process to securely back up our production PostgreSQL database and transfer it to MinIO for reliable storage.
+
+**Connecting to Production PostgreSQL:** We connect directly to the production PostgreSQL instance to ensure data integrity and the latest backup.
+
+**Creating a Database Backup:** A full backup of the PostgreSQL database is performed.
+
+**Transferring Backup to MinIO:** The generated database backup file is then securely transferred and stored in our MinIO object storage.
+
+## 📥 Downloading Backup from MinIO
+To facilitate restoration or auditing, we've implemented a procedure to download backups from MinIO:
+
+The desired backup file is retrieved directly from the MinIO bucket.
+
+## 🔐 Dedicated MinIO Accounts for Backup Management
+For enhanced security and access control, we've set up separate MinIO accounts with specific permissions for backup operations. This ensures that only authorized processes or users can perform relevant actions.
+
+These accounts were created using:
+
+**MinIO User Interface (UI):** For easy visual management.
+
+**MinIO Command-Line Interface (CLI):** For scripting and automation of user creation and policy attachment.
+
+These dedicated accounts enforce a principle of least privilege, meaning accounts for depositing backups only have write access, and accounts for retrieving backups only have read access to the relevant buckets.
+
+#### 📌 Application Architecture
+The Voting App consists of multiple microservices that handle voting, result tallying, and backend operations. Initially, the deployment was done manually, and later, we implemented CI/CD pipelines to streamline the build and test process.
+The Voting App consists of the following components:
+
+  - **Frontend**: User interface for voting
+  - **Backend**: Processes voting requests
+  - **Database (PostgreSQL)**: Stores vote data
+  - **Queue (Redis)**: Handles request queuing
+  - **Worker**: Processes voting data
+
+#### Technologies Used
+
+  - **Docker:** Containerization of services
+  - **Ansible:** Automation of deployment
+  - **GitLab CI/CD:** Pipeline implementation for build and test automation
+  - **Traefik:** Reverse proxy and load balancing
+  - **PostgreSQL:** Database backend
+  - **Redis:** In-memory data store for caching and messaging
+
+#### 🚀 Completed Steps
+
+✅ Setup Development and production stage with Gitlab CI/CD
+
+  - image scaning with trivy
+  - gitlab cache 
+  - load test with ab
+  - gitlab image clean up policy
+
+#### 📌 Next Steps
+
+✅ Moving forward, we aim to complete these items and address them thoroughly:
+
+  - add gitlab component and catalog
+  - database backup test
+  - update gitlab service
+  - update minio service
+  - update nexus service
+  - update traefik service
+
+#### 🚀 Project directory and `gitlab-ci` deployment section
+
+```bash
+cicd/monorepo-voting-app
+```
+
+**gitlab-ci file:**
+
+```yaml
 stages:
   - build
   - test
@@ -250,3 +342,15 @@ check_backup:
       ls
   # rules:
   #   - if: $CI_PIPELINE_SOURCE == "schedule"
+```
+
+
+### 📢 Stay tuned for the next steps! 🚀
+
+
+## 🔗 Links
+[![Site](https://img.shields.io/badge/Dockerme.ir-0A66C2?style=for-the-badge&logo=docker&logoColor=white)](https://dockerme.ir/)
+[![YouTube](https://img.shields.io/badge/youtube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube.com/@dockerme)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ahmad-rafiee/)
+[![Telegram](https://img.shields.io/badge/telegram-0A66C2?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/dockerme)
+[![Instagram](https://img.shields.io/badge/instagram-FF0000?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/dockerme)
