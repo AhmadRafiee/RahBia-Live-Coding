@@ -1,3 +1,116 @@
+
+# Rahbia Live Coding
+
+- [Rahbia Live Coding](#rahbia-live-coding)
+  - [Organized by DockerMe group](#organized-by-dockerme-group)
+  - [Video Link:](#video-link)
+  - [🔴 Live Coding Session 22: Restore Backup, and Database Backup Verification Report](#-live-coding-session-22-restore-backup-and-database-backup-verification-report)
+  - [🚀 Speeding Up Operations with a Custom Runner Image](#-speeding-up-operations-with-a-custom-runner-image)
+  - [💾 Production PostgreSQL Backup and MinIO Transfer](#-production-postgresql-backup-and-minio-transfer)
+  - [📥 Downloading Backup from MinIO](#-downloading-backup-from-minio)
+  - [Test PostgreSQL Container Setup](#test-postgresql-container-setup)
+  - [Backup Restoration](#backup-restoration)
+  - [Data Validation: Vote Count Retrieval](#data-validation-vote-count-retrieval)
+  - [Backup Health Report Generation](#backup-health-report-generation)
+  - [Environment Cleanup](#environment-cleanup)
+  - [📌 Application Architecture](#-application-architecture)
+  - [🚀 Technologies Used](#-technologies-used)
+  - [📌 Next Steps](#-next-steps)
+  - [🚀 Project directory and `gitlab-ci` deployment section](#-project-directory-and-gitlab-ci-deployment-section)
+  - [🔗 Stay connected with DockerMe! 🚀](#-stay-connected-with-dockerme-)
+
+
+## Organized by DockerMe group
+  - **Speaker:** [Ahmad Rafiee](https://www.linkedin.com/in/ahmad-rafiee)
+  - **Date:** 30 July 2025
+  - **Number of Sessions:** 22 (Session 22)
+
+## Video Link:
+[![YouTube](http://i.ytimg.com/vi/rhCkf4hCPEA/hqdefault.jpg)](https://www.youtube.com/live/rhCkf4hCPEA)
+
+## 🔴 Live Coding Session 22: Restore Backup, and Database Backup Verification Report
+
+In Live Coding Session 22, This Session contains Restore and Check Operations for Production PostgreSQL Backup.
+
+This document outlines the procedures for backing up a production PostgreSQL database, transferring the backup to MinIO, and restoring it. It also covers the setup of dedicated MinIO accounts for secure backup management.
+
+## 🚀 Speeding Up Operations with a Custom Runner Image
+To significantly improve the speed and efficiency of our backup and restore workflows, we've created a specialized Docker image for our runners. This image is pre-configured with all necessary tools and dependencies, reducing setup time during job execution.
+
+## 💾 Production PostgreSQL Backup and MinIO Transfer
+We've established a robust process to securely back up our production PostgreSQL database and transfer it to MinIO for reliable storage.
+
+**Connecting to Production PostgreSQL:** We connect directly to the production PostgreSQL instance to ensure data integrity and the latest backup.
+
+**Creating a Database Backup:** A full backup of the PostgreSQL database is performed.
+
+**Transferring Backup to MinIO:** The generated database backup file is then securely transferred and stored in our MinIO object storage.
+
+## 📥 Downloading Backup from MinIO
+To facilitate restoration or auditing, we've implemented a procedure to download backups from MinIO:
+
+The desired backup file is retrieved directly from the MinIO bucket.
+
+
+## Test PostgreSQL Container Setup
+First, we spun up a test PostgreSQL container to provide an isolated and safe environment for our verification process. This ensures that our operations don't interfere with any production systems.
+
+## Backup Restoration
+Next, the database backup was successfully restored within this temporary PostgreSQL container. This step is crucial for confirming that the backup data is complete and can be fully recovered.
+
+## Data Validation: Vote Count Retrieval
+After restoration, we executed specific queries against the restored database. Our primary focus was to retrieve the vote counts to validate the data's accuracy and integrity. This step confirms that the critical data from the backup is correct.
+
+## Backup Health Report Generation
+Upon successful data validation, we prepared a comprehensive report on the health and consistency of our backup. This report includes:
+
+* **Restoration Status:** Confirmation that the database was restored without issues.
+
+* **Data Integrity:** Verification of key data points, including the accurate vote counts.
+
+
+## Environment Cleanup
+Finally, once the verification process and report generation were complete, the entire temporary PostgreSQL container and all associated resources were thoroughly cleaned up. This ensures we don't leave any unnecessary resources running and maintains a tidy workspace.
+
+## 📌 Application Architecture
+The Voting App consists of multiple microservices that handle voting, result tallying, and backend operations. Initially, the deployment was done manually, and later, we implemented CI/CD pipelines to streamline the build and test process.
+The Voting App consists of the following components:
+
+  - **Frontend**: User interface for voting
+  - **Backend**: Processes voting requests
+  - **Database (PostgreSQL)**: Stores vote data
+  - **Queue (Redis)**: Handles request queuing
+  - **Worker**: Processes voting data
+
+## 🚀 Technologies Used
+
+  - **Docker:** Containerization of services
+  - **GitLab CI/CD:** Pipeline implementation for build and test automation
+  - **Traefik:** Reverse proxy and load balancing
+  - **PostgreSQL:** Database backend
+  - **Redis:** In-memory data store for caching and messaging
+
+## 📌 Next Steps
+
+✅ Moving forward, we aim to complete these items and address them thoroughly:
+
+  - add gitlab component and catalog
+  - encrypt and decrypt psql backup
+  - check gitlab backup
+  - update gitlab service
+  - update minio service
+  - update nexus service
+  - update traefik service
+
+## 🚀 Project directory and `gitlab-ci` deployment section
+
+```bash
+cicd/monorepo-voting-app
+```
+
+**gitlab-ci file:**
+
+```yaml
 stages:
   - build
   - test
@@ -312,3 +425,10 @@ check_backup:
     expire_in: 1 week
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
+```
+
+## 🔗 Stay connected with DockerMe! 🚀
+
+**Subscribe to our channels, leave a comment, and drop a like to support our content. Your engagement helps us create more valuable DevOps and cloud content!** 🙌
+
+[![Site](https://img.shields.io/badge/Dockerme.ir-0A66C2?style=for-the-badge&logo=docker&logoColor=white)](https://dockerme.ir/) [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ahmad-rafiee/) [![Telegram](https://img.shields.io/badge/telegram-0A66C2?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/dockerme) [![YouTube](https://img.shields.io/badge/youtube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube.com/@dockerme) [![Instagram](https://img.shields.io/badge/instagram-FF0000?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/dockerme)

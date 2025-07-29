@@ -51,7 +51,8 @@ Below is a list of the sessions we've already completed in the RahBia Live Codin
   - **[Session 17:](2025-Sessions/Session-17-06-May.md)** Voting App Deployment on Docker with gitlab CI/CD
   - **[Session 18:](2025-Sessions/Session-18-13-May.md)** Deploy to multiple environments and pipeline efficiency
   - **[Session 19:](2025-Sessions/Session-19-20-May.md)** Container scanning with trivy, load test with ab and gitlab image cleanup policy
-  - **[Session 21:](2025-Sessions/Session-21-23-July.md)** Backup and Restore Operations for Production PostgreSQL
+  - **[Session 21:](2025-Sessions/Session-21-23-July.md)** Backup and Restore Operations for Production PostgreSQL with Gitlab CI/CD
+  - **[Session 22:](2025-Sessions/Session-22-30-July.md)** Restore Production PostgreSQL Backup and Verification with Gitlab CI/CD
 
 Feel free to check out the session's detailed steps and resources in the respective session folders. We’ll keep updating this list as we progress through more advanced topics in DevOps.
 
@@ -78,7 +79,6 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
   - [x] Create a VM template on VMware and write an Ansible playbook to automate VM creation
   - [ ] Deploy the project as a service on a server with a database and cache, demonstrating the challenges and complexities
   - [x] Set up GitLab on Docker to continue the project
-    - [ ] Gitlab Update
     - [x] create gitlab runner server
     - [x] register gitlab runner service
     - [x] create gitlab backup script
@@ -105,21 +105,22 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
   - [x] Draw a High-Level Design (HLD) diagram of the services built and the path taken
   - [x] Review voting project Dockerfiles, build images and push them to a registry
   - [x] Write a Compose file to containerize the voting project setup
-  - [ ] Add environment variables for configurable project settings
+  - [x] Add environment variables for configurable project settings
   - [x] Use Traefik as a reverse proxy for the entire project
   - [x] Draw an HLD diagram for the services created and the path followed
-  - [ ] Write CI/CD for the project with deployment to 3 different environments with unique configurations
+  - [x] Write CI/CD for the project with deployment to 3 different environments with unique configurations
     - [x] Build stage
     - [x] Test stage
     - [x] Deploy to development
     - [x] Deploy to production
     - [x] container scanning with trivy
-    - [ ] add gitlab component and catalog
     - [x] add load test scenario
     - [x] create backup from database 
     - [x] move backup to object storage
-    - [ ] database backup test
+    - [x] database backup test
     - [x] gitlab image clean up policy
+    - [ ] encrypt and decrypt psql backup
+    - [ ] add gitlab component and catalog
     - [ ] check gitlab backup
   - [ ] upgrade all services 
     - [ ] update gitlab service
