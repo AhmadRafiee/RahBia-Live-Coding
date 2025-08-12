@@ -33,7 +33,7 @@ docker_config:
     enable: false
     http_url: "http://127.0.0.1:8123"
     https_url: "http://127.0.0.1:8123"
-    no_proxy_url: "hub.mecan.ir,127.0.0.0/8"
+    no_proxy_url: "docker.arvancloud.ir,127.0.0.0/8"
   logging:
     enable: true
     labels: "{{ inventory_hostname }}"
@@ -41,7 +41,7 @@ docker_config:
     max_size: 100M
   mirror_registry:
     enable: true
-    urls: "https://hub.mecan.ir"
+    urls: "https://docker.arvancloud.ir"
   insecure_registry:
     enable: true
     urls: "https://test.mecan.ir"

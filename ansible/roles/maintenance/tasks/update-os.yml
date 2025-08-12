@@ -1,0 +1,8 @@
+---
+- name: Update all Debian/Ubuntu packages to their latest version
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+    update_cache: true
+    autoremove: true
+    autoclean: true

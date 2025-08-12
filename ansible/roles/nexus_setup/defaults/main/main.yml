@@ -2,7 +2,7 @@
 service_dir: "{{ project_dir }}/nexus"
 
 # nexus image tag
-nexus_image_tag: 3.77.1
+nexus_image_tag: 3.83.0
 
 # minio domain
 nexus_main_domain: "repo.{{ main_domain }}"

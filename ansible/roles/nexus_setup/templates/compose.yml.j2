@@ -40,9 +40,9 @@ services:
       - "traefik.http.routers.repo.tls.certresolver=myresolver"
       - "traefik.http.routers.repo.service=repo"
       - "traefik.http.services.repo.loadBalancer.server.port=8081"
-      {% if create_docker_repository is defined %}
-      {% for repo in create_docker_repository %}
-- "traefik.http.routers.http-{{ repo.name }}.rule=Host(`{{ repo.repo_domain }}`)"
+{% if create_docker_repository is defined %}
+{% for repo in create_docker_repository %}
+      - "traefik.http.routers.http-{{ repo.name }}.rule=Host(`{{ repo.repo_domain }}`)"
       - "traefik.http.routers.http-{{ repo.name }}.entrypoints=web"
       - "traefik.http.routers.{{ repo.name }}.rule=Host(`{{ repo.repo_domain }}`)"
       - "traefik.http.routers.{{ repo.name }}.entrypoints=web-secure"
@@ -50,5 +50,5 @@ services:
       - "traefik.http.routers.{{ repo.name }}.tls.certresolver=myresolver"
       - "traefik.http.routers.{{ repo.name }}.service={{ repo.name }}"
       - "traefik.http.services.{{ repo.name }}.loadBalancer.server.port={{ repo.repo_port }}"
-      {% endfor %}
-      {% endif %}
+{% endfor %}
+{% endif %}

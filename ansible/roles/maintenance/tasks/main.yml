@@ -1,0 +1,15 @@
+---
+- name: update OS
+  import_tasks: update-os.yml
+  tags:
+    - update_os
+    - update
+    - maintenance
+
+- name: cleanup docker unused resources
+  import_tasks: docker-cleanup.yml
+  tags:
+    - docker_prune
+    - cleanup
+    - maintenance
+

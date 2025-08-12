@@ -1,0 +1,6 @@
+- name: maintenance
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - maintenance

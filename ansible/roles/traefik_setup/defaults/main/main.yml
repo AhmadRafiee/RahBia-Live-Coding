@@ -6,3 +6,6 @@ traefik_domain: "tra.{{ main_domain }}"
 traefik_acme_email: ahmad@MeCan.ir
 
 service_dir: "{{ project_dir }}/traefik"
+
+# traefik image tag
+traefik_image_tag: "v3.5"

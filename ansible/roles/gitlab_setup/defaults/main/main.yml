@@ -2,7 +2,7 @@
 service_dir: "{{ project_dir }}/gitlab"
 backups_dir: "{{ project_dir }}/backup"
 
-gitlab_image_tag: 17.7.0-ce.0
+gitlab_image_tag: 18.2.1-ce.0
 
 # gitlab domain
 gitlab_main_domain: "git.{{ main_domain }}"
