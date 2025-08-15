@@ -1,4 +1,11 @@
 ---
+- name: Creates directory
+  ansible.builtin.file:
+    path: /root/.config/pip
+    state: directory
+  tags:
+    - preparing
+    
 - name: Copy file
   ansible.builtin.copy:
     src: pip.conf
