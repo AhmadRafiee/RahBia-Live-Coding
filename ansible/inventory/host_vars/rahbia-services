@@ -1,0 +1,17 @@
+DISK_SIZE: 100
+DATASTORE_NAME: SSD-SAMSUNG-4T-2
+MEMORY_SIZE: 8192
+CPU_SIZE: 4
+IP_ADDRESS: 192.168.200.101
+VM_FOLDER: RahBia-Live-Coding
+SSH_JUMP: "ssh -W %h:%p -q labe-amoo"
+iptables:
+  nic_access:
+    - web_net
+    - app_net
+  tcp_port:
+    - 80
+    - 443
+  #udp_port:
+  ip_access:
+    - 192.168.200.0/24
