@@ -28,3 +28,4 @@ shutdown_timeout = 0
     volumes = ["/cache","/var/run/docker.sock:/var/run/docker.sock"]
     shm_size = 0
     network_mtu = 0
+    helper_image = "docker.arvancloud.ir/gitlab/gitlab-runner-helper:x86_64-v${CI_RUNNER_VERSION}"
