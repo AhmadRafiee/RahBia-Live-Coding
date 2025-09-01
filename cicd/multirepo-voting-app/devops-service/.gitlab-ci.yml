@@ -1,0 +1,191 @@
+stages:
+  - deploy
+  - post-deploy
+  - backup
+
+variables:
+  service_dir: /opt/services/voting-app-multirepo
+  VERSION: v1.0.0
+  server_user: root
+  server_port: 8090
+  project_group: devops
+  seed_image: ${CI_REGISTRY}/devops/seed-service/seed:${VERSION}
+
+.deploy:
+  stage: deploy
+  image: alpine:latest
+  variables:
+    vote_domain: vote
+    result_domain: result
+    traefik_domain: tra
+  before_script:
+    - 'command -v ssh-agent >/dev/null || ( apk add --update --no-cache openssh )'
+    - eval $(ssh-agent -s)
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+  script:
+    - |
+      sed -i s/IMAGE_REGISTRY/${CI_REGISTRY}/g .env
+      sed -i s/IMAGE_GROUP/${project_group}/g .env
+      sed -i s/IMAGE_VERSION/${VERSION}/g .env
+      sed -i s/DOMIAN_ADDRESS/${main_domain}/g .env
+      
+      ssh -o StrictHostKeyChecking=no -p ${server_port} ${server_user}@${server_address} "
+      [[ -d ${service_dir} ]] || mkdir -p ${service_dir}
+      docker network ls | grep web_net || docker network create web_net
+      docker network ls | grep app_net || docker network create app_net
+      "
+
+      scp -o StrictHostKeyChecking=no -P${server_port} .env ${server_user}@${server_address}:${service_dir}/
+      scp -o StrictHostKeyChecking=no -P${server_port} compose.yml ${server_user}@${server_address}:${service_dir}/
+
+      ssh -o StrictHostKeyChecking=no -p ${server_port} ${server_user}@${server_address} "
+      docker login ${CI_REGISTRY} --username ${registry_username} --password ${registry_password}
+      cd ${service_dir}
+      docker compose pull 
+      docker compose up -d
+      "
+  except:
+    - schedule
+
+.load:
+  stage: post-deploy
+  image: ${seed_image}
+  variables:
+    vote_domain: vote
+    vote_service_url: https://${vote_domain}.${main_domain}/
+  before_script:
+    - python /seed/make-data.py
+  script:
+    - echo $vote_service_url
+    - bash /seed/generate-votes.sh > ab-output.txt
+  artifacts:
+    paths:
+      - ab-output.txt
+    expire_in: 1 week
+  when: manual
+  except:
+    - schedule
+
+deploy-development:
+  extends: .deploy
+  variables:
+    main_domain: dev.app.rahbia.ir
+    server_address: 192.168.200.104
+  environment:
+    name: development
+    url: https://${vote_domain}.${main_domain}
+
+deploy-production:
+  extends: .deploy
+  variables:
+    main_domain: app.rahbia.ir
+    server_address: 192.168.200.105
+  environment:
+    name: production
+    url: https://${vote_domain}.${main_domain}
+  when: manual
+
+load-test-development:
+  extends: .load
+  variables:
+    main_domain: dev.app.rahbia.ir
+
+load-test-production:
+  extends: .load
+  variables:
+    main_domain: app.rahbia.ir
+
+# create_backup:
+#   stage: backup
+#   image: reg.rahbia.mecan.ir/devops/runner-images/mc-ssh:3.22.1
+#   variables:
+#     MINIO_ALIAS_NAME: MeCan
+#     MINIO_ENDPOINT: https://min.rahbia.mecan.ir
+#     MINIO_BUCKET: voting-app-backup
+#     server_address: 192.168.200.105
+#     BACKUP_PATH: /opt/BACKUP
+#   before_script:
+#     - 'command -v ssh-agent >/dev/null || ( apk add --update --no-cache openssh )'
+#     - eval $(ssh-agent -s)
+#     - chmod 400 "$SSH_PRIVATE_KEY"
+#     - ssh-add "$SSH_PRIVATE_KEY"
+#     - mkdir -p ~/.ssh
+#     - chmod 700 ~/.ssh
+#     - mc alias set ${MINIO_ALIAS_NAME} ${MINIO_ENDPOINT} ${MINIO_CREATE_ACCESS_KEY} ${MINIO_CREATE_SECRET_KEY}
+#   script:
+#     - |
+#       ssh -o StrictHostKeyChecking=no -p ${server_port} ${server_user}@${server_address} "
+#       # Create directory if not exist
+#       [ -d ${BACKUP_PATH} ] || mkdir -p ${BACKUP_PATH}
+#       cd ${BACKUP_PATH}
+
+#       # Create postgresql backup
+#       docker exec -i -e PGPASSWORD=${POSTGRES_PASSWORD} db /usr/local/bin/pg_dumpall --host=localhost --port=5432 --username=${POSTGRES_USER} | gzip -9 > voting_app_postgres_backup_${CI_PIPELINE_ID}.sql.gz
+#       "
+#       # move backup file to runner
+#       scp -o StrictHostKeyChecking=no -P${server_port} ${server_user}@${server_address}:${BACKUP_PATH}/voting_app_postgres_backup_${CI_PIPELINE_ID}.sql.gz .
+#       mc put voting_app_postgres_backup_${CI_PIPELINE_ID}.sql.gz ${MINIO_ALIAS_NAME}/${MINIO_BUCKET}/
+#   rules:
+#     - if: $CI_PIPELINE_SOURCE == "schedule"
+
+# check_backup:
+#   stage: backup
+#   image: reg.rahbia.mecan.ir/devops/runner-images/mc-docker:28.3.3
+#   needs:
+#     - create_backup
+#   variables:
+#     MINIO_ALIAS_NAME: MeCan
+#     MINIO_ENDPOINT: https://min.rahbia.mecan.ir
+#     MINIO_BUCKET: voting-app-backup
+#     BACKUP_PATH: /opt/BACKUP
+#   before_script:
+#     - 'command -v ssh-agent >/dev/null || ( apk add --update --no-cache openssh )'
+#     - eval $(ssh-agent -s)
+#     - chmod 400 "$SSH_PRIVATE_KEY"
+#     - ssh-add "$SSH_PRIVATE_KEY"
+#     - mkdir -p ~/.ssh
+#     - chmod 700 ~/.ssh
+#     - mc alias set ${MINIO_ALIAS_NAME} ${MINIO_ENDPOINT} ${MINIO_CHECK_ACCESS_KEY} ${MINIO_CHECK_SECRET_KEY}
+#   script:
+#     - |
+#       # get backup from minio and extract backup
+#       mc get ${MINIO_ALIAS_NAME}/${MINIO_BUCKET}/voting_app_postgres_backup_${CI_PIPELINE_ID}.sql.gz .
+#       gunzip voting_app_postgres_backup_${CI_PIPELINE_ID}.sql.gz
+
+#       # run test psql contianer and check is ready
+#       docker run -d --name psql-test -v db_test_data:/var/lib/postgresql/data -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres:15-alpine
+#       sleep 5
+
+#       docker exec -i psql-test pg_isready -U ${POSTGRES_USER}
+#       echo "Waiting for PostgreSQL in container psql-test to be ready..."
+#       retry_count=0
+#       until docker exec -i psql-test pg_isready -U "${POSTGRES_USER}" > /dev/null 2>&1; do
+#         retry_count=$((retry_count + 1))
+#         sleep 1
+#         echo "PostgreSQL is not yet ready. Retrying in $SLEEP_INTERVAL seconds (attempt $retry_count/$MAX_RETRIES)..."
+#       done
+#       echo "PostgreSQL in container psql-test is now ready!"
+
+#       # restore psql backup
+#       cat voting_app_postgres_backup_${CI_PIPELINE_ID}.sql | docker exec -i -e POSTGRES_USER=postgres psql-test psql -U postgres
+
+#       # check vote counts
+#       VOTE_NUMBERS=$(docker exec -i -e POSTGRES_USER=postgres psql-test psql -U postgres -d postgres -c "SELECT COUNT(*) FROM votes;")
+#       CLEAN_VOTE_NUMBERS=$(echo $VOTE_NUMBERS | cut -d " " -f3) 
+#       [[ $CLEAN_VOTE_NUMBERS -gt '157' ]] && echo "Backup is Correct" || echo "Backup is not ok"
+
+#       # create report
+#       echo "Vote_Numbers: $CLEAN_VOTE_NUMBERS" > check_backup_report_${CI_PIPELINE_ID}.txt
+#       echo "Pipeline_ID: ${CI_PIPELINE_ID}" >> check_backup_report_${CI_PIPELINE_ID}.txt
+#   after_script:
+#     - docker rm -f psql-test
+#     - docker volume rm db_test_data
+#   artifacts:
+#     paths:
+#       - ./check_backup_report_${CI_PIPELINE_ID}.txt
+#     expire_in: 1 week
+#   rules:
+#     - if: $CI_PIPELINE_SOURCE == "schedule"

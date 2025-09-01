@@ -1,0 +1,160 @@
+name: voting-app
+
+networks:
+  web_net:
+    name: web_net
+    external: true
+  app_net:
+    name: app_net
+    external: true
+
+volumes:
+  db_data:
+    name: db_data
+    external: false
+    driver: local
+  traefik_data:
+    name: traefik_data
+    driver: local
+    external: false
+
+services:
+  traefik:
+    image: traefik:v3.2
+    container_name: traefik
+    hostname: traefik
+    restart: ${restart_policy}
+    command:
+      - "--log.level=INFO"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.network=web_net"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entryPoint.to=web-secure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.web-secure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=${acme_email}"
+      - "--certificatesresolvers.myresolver.acme.storage=/certs/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "traefik_data:/certs"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - web_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.web-auth.basicauth.users=${web_auth_user}:${web_auth_pass}"
+      - "traefik.http.routers.http-khodesh.rule=Host(`${traefik_domain}.${main_domain}`)"
+      - "traefik.http.routers.http-khodesh.entrypoints=web"
+      - "traefik.http.routers.khodesh.rule=Host(`${traefik_domain}.${main_domain}`)"
+      - "traefik.http.routers.khodesh.entrypoints=web-secure"
+      - "traefik.http.routers.khodesh.middlewares=web-auth@docker"
+      - "traefik.http.routers.khodesh.tls=true"
+      - "traefik.http.routers.khodesh.tls.certresolver=myresolver"
+      - "traefik.http.services.khodesh.loadBalancer.server.port=8080"
+
+  vote:
+    image: ${image_registry}/${image_repository}/vote-service/vote:${image_version}
+    container_name: vote
+    hostname: vote
+    restart: ${restart_policy}
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - web_net
+      - app_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vote.rule=Host(`${vote_domain}.${main_domain}`)"
+      - "traefik.http.routers.vote.entrypoints=web"
+      - "traefik.http.routers.vote-secure.rule=Host(`${vote_domain}.${main_domain}`)"
+      - "traefik.http.routers.vote-secure.entrypoints=web-secure"
+      - "traefik.http.routers.vote-secure.tls=true"
+      - "traefik.http.routers.vote-secure.tls.certresolver=myresolver"
+      - "traefik.http.services.vote.loadBalancer.server.port=80"
+
+  result:
+    image: ${image_registry}/${image_repository}/result-service/result:${image_version}
+    container_name: result
+    hostname: result
+    restart: ${restart_policy}
+    entrypoint: nodemon --inspect=0.0.0.0 server.js
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - web_net
+      - app_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.result.rule=Host(`${result_domain}.${main_domain}`)"
+      - "traefik.http.routers.result.entrypoints=web"
+      - "traefik.http.routers.result-secure.rule=Host(`${result_domain}.${main_domain}`)"
+      - "traefik.http.routers.result-secure.entrypoints=web-secure"
+      - "traefik.http.routers.result-secure.tls=true"
+      - "traefik.http.routers.result-secure.tls.certresolver=myresolver"
+      - "traefik.http.services.result.loadBalancer.server.port=80"
+
+  worker:
+    image: ${image_registry}/${image_repository}/worker-service/worker:${image_version}
+    container_name: worker
+    hostname: worker
+    restart: ${restart_policy}
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    networks:
+      - app_net
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    hostname: redis
+    restart: ${restart_policy}
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -h 127.0.0.1 ping | grep 'PONG' || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    networks:
+      - app_net
+
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    hostname: db
+    restart: ${restart_policy}
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - "db_data:/var/lib/postgresql/data"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U '${POSTGRES_USER}'"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    networks:
+      - app_net

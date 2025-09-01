@@ -1,0 +1,63 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  service_name: result
+  VERSION: v1.0.0
+
+build_result_service:
+  stage: build
+  image: docker:latest
+  before_script:
+    - docker login ${CI_REGISTRY} --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD}
+  script:
+    - docker build -t ${CI_REGISTRY}/${CI_PROJECT_PATH}/${service_name}:${CI_COMMIT_SHORT_SHA} .
+    - docker tag ${CI_REGISTRY}/${CI_PROJECT_PATH}/${service_name}:${CI_COMMIT_SHORT_SHA} ${CI_REGISTRY}/${CI_PROJECT_PATH}/${service_name}:${VERSION}
+    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}/${service_name}:${CI_COMMIT_SHORT_SHA}
+    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}/${service_name}:${VERSION}
+
+test_result_service:
+  image:
+    name: docker.io/aquasec/trivy:latest
+    entrypoint: [""]
+  variables:
+    FULL_IMAGE_NAME: ${CI_REGISTRY}/${CI_PROJECT_PATH}/${service_name}:${VERSION}
+  script:
+    - trivy --version
+
+    # Set http proxy
+    - export HTTP_PROXY=http://192.168.200.1:8123
+    - export HTTPS_PROXY=http://192.168.200.1:8123
+
+    # update vulnerabilities db
+    - time trivy image --download-db-only --no-progress
+        --db-repository="ghcr.io/aquasecurity/trivy-db:2"
+        --cache-dir /cache/
+
+    # Unset http proxy
+    - unset HTTP_PROXY
+    - unset HTTPS_PROXY
+
+    - time trivy image --exit-code 0 
+        --cache-dir /cache/ --severity CRITICAL 
+        --format template --template "@/contrib/gitlab.tpl" 
+        --output "$CI_PROJECT_DIR/gl-container-scanning-report.json" 
+        "$FULL_IMAGE_NAME"
+  cache:
+    paths:
+      - /cache/
+  artifacts:
+    when: always
+    reports:
+      container_scanning: gl-container-scanning-report.json
+
+
+deploy_result_service:
+  stage: deploy
+  needs: ["test_result_service"]
+  trigger:
+    project: devops/devops-service
+    branch: main
+    strategy: depend
