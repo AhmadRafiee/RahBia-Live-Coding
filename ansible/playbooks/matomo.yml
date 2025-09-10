@@ -1,0 +1,6 @@
+- name: install and configuration matomo service
+  hosts: rahbia-services
+  become: true
+  gather_facts: true
+  roles:
+    - matomo_setup
