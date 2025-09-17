@@ -55,6 +55,7 @@ Below is a list of the sessions we've already completed in the RahBia Live Codin
   - **[Session 22:](2025-Sessions/Session-22-30-July.md)** Restore Production PostgreSQL Backup and Verification with Gitlab CI/CD
   - **[Session 24:](2025-Sessions/Session-24-13-August.md)** Update all service with Ansible
   - **[Session 26:](2025-Sessions/Session-26-26-August.md)** Create multi-project CI/CD
+  - **[Session 27:](2025-Sessions/Session-27-02-September.md)** Complete multi-project CI/CD and gitlab CI/CD-Catalog and Components
 
 Feel free to check out the session's detailed steps and resources in the respective session folders. We’ll keep updating this list as we progress through more advanced topics in DevOps.
 
@@ -122,13 +123,13 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
     - [x] database backup test
     - [x] gitlab image clean up policy
     - [ ] encrypt and decrypt psql backup
-    - [ ] add gitlab component and catalog
-    - [ ] check gitlab backup
-    - [ ] create ci/cd multi-project
+    - [x] add gitlab component and catalog
+    - [x] check gitlab backup
+    - [x] create ci/cd multi-project
       - [x] trigger downstream project
       - [x] create multi-project pipeline
-      - [ ] create load test 
-      - [ ] create backup and restore database
+      - [x] create load test 
+      - [x] create backup and restore database
   - [x] upgrade all services 
     - [x] update gitlab service
     - [x] update gitlab runner
@@ -138,12 +139,13 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
     - [x] update and upgrade debian os
   - [ ] create sonarqube service for test
   - [ ] Write tests for services using SonarQube
-  - [ ] Write tests for services using Trivy Scanner
-  - [ ] Perform load testing on the services with ab
+  - [x] Write tests for services using Trivy Scanner
+  - [x] Perform load testing on the services with ab
   - [ ] Perform load testing on the services with k6
-  - [ ] Create backups for stateful services
-  - [ ] Store backups in the server and send them to object storage
-  - [ ] Test backups by restoring them on other runners
+  - [x] Create backups for stateful services
+  - [x] Store backups in the server and send them to object storage
+  - [x] Test backups by restoring them on other runners
+  - [ ] Draw HLD diagrams of the monitoring services and the journey so far
   - [ ] Set up Prometheus stack on Docker for monitoring and alerting
   - [ ] Set up ELK stack on Docker for monitoring and logging
   - [ ] Set up Loki stack on Docker for logging
