@@ -1,0 +1,9 @@
+spec:
+  inputs:
+    stage:
+      default: build
+---
+amoo:
+  stage: $[[ inputs.stage ]]
+  script:
+    - echo " hi amoo "
