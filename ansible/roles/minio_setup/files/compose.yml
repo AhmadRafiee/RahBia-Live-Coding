@@ -30,7 +30,6 @@ services:
       - app_net
     labels:
       - "traefik.enable=true"
-
       - "traefik.http.routers.http-io.rule=Host(`${minio_console_domain}`)"
       - "traefik.http.routers.http-io.entrypoints=web"
       - "traefik.http.routers.io.rule=Host(`${minio_console_domain}`)"

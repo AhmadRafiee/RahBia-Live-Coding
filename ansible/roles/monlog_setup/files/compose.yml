@@ -1,0 +1,104 @@
+---
+networks:
+  web_net:
+    name: web_net
+    external: true
+  app_net:
+    name: app_net
+    external: true
+
+volumes:
+    prom_data:
+      name: prom_data
+    grafana_data:
+      name: grafana_data
+    alert_data:
+      name: alerts_data
+    pushgw_data:
+      name: pushgw_data
+
+services:
+  prometheus:
+    image: prom/prometheus:${prom_image_tag}
+    container_name: prometheus
+    hostname: prometheus
+    restart: ${restart_policy}
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prom_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--storage.tsdb.retention.size=30GB'
+    networks:
+      - web_net
+      - app_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.http-prom.rule=Host(`${prom_sub}.${main_domain}`)"
+      - "traefik.http.routers.http-prom.entrypoints=web"
+      - "traefik.http.routers.prom.rule=Host(`${prom_sub}.${main_domain}`)"
+      - "traefik.http.routers.prom.entrypoints=web-secure"
+      - "traefik.http.routers.prom.tls=true"
+      - "traefik.http.routers.prom.tls.certresolver=myresolver"
+      - "traefik.http.routers.prom.service=prom"
+      - "traefik.http.services.prom.loadBalancer.server.port=9090"
+
+  alertmanager:
+    image: prom/alertmanager:${alert_image_tag}
+    container_name: alertmanager
+    hostname: alertmanager
+    restart: ${restart_policy}
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/
+      - alert_data:/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    networks:
+      - web_net
+      - app_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.http-alert.rule=Host(`${alert_sub}.${main_domain}`)"
+      - "traefik.http.routers.http-alert.entrypoints=web"
+      - "traefik.http.routers.alert.rule=Host(`${alert_sub}.${main_domain}`)"
+      - "traefik.http.routers.alert.entrypoints=web-secure"
+      - "traefik.http.routers.alert.tls=true"
+      - "traefik.http.routers.alert.tls.certresolver=myresolver"
+      - "traefik.http.routers.alert.service=alert"
+      - "traefik.http.services.alert.loadBalancer.server.port=9093"
+
+  grafana:
+    image: grafana/grafana:${grafana_image_tag}
+    container_name: grafana
+    hostname: grafana
+    restart: ${restart_policy}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      #- ./grafana/provisioning/:/etc/grafana/provisioning
+    environment:
+      - GF_SERVER_ROOT_URL=https://${grafana_sub}.${main_domain}/
+      - GF_SECURITY_ADMIN_USER=${grafana_username}
+      - GF_SECURITY_ADMIN_PASSWORD=${grafana_password}
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_PATHS_DATA=/var/lib/grafana
+      - GF_USERS_DEFAULT_THEME=light
+      - GF_LOG_MODE=console
+      - GF_LOG_LEVEL=critical
+    networks:
+      - web_net
+      - app_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.http-grafana.rule=Host(`${grafana_sub}.${main_domain}`)"
+      - "traefik.http.routers.http-grafana.entrypoints=web"
+      - "traefik.http.routers.grafana.rule=Host(`${grafana_sub}.${main_domain}`)"
+      - "traefik.http.routers.grafana.entrypoints=web-secure"
+      - "traefik.http.routers.grafana.tls=true"
+      - "traefik.http.routers.grafana.tls.certresolver=myresolver"
+      - "traefik.http.routers.grafana.service=grafana"
+      - "traefik.http.services.grafana.loadBalancer.server.port=3000"

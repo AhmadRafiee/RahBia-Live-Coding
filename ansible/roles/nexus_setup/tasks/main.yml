@@ -56,6 +56,16 @@
     - config_nexus
     - create_apt_repo
 
+- name: nexus config | create helm repository
+  include_tasks: create-helm-repo.yml
+  loop: "{{ create_helm_repository }}"
+  loop_control:
+    loop_var: item
+  tags:
+    - setup_nexus
+    - config_nexus
+    - create_helm_repo
+
 - name: nexus config | create docker repository
   include_tasks: create-docker-repo.yml
   loop: "{{ create_docker_repository }}"

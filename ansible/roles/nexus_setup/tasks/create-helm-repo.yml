@@ -1,0 +1,60 @@
+---
+- name: Check if the repository exists
+  uri:
+    url: "{{ nexus_main_url }}/service/rest/v1/repositories/helm/proxy/{{ item.name }}"
+    method: GET
+    user: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    force_basic_auth: yes
+    status_code: 200
+  register: repo_check_response
+  failed_when: repo_check_response.status not in [200, 404]
+  ignore_errors: true
+  tags:
+    - setup_nexus
+    - config_nexus
+    - create_helm_repo
+
+- name: Create Helm proxy repositories
+  uri:
+    url: "{{ nexus_main_url }}/service/rest/v1/repositories/helm/proxy"
+    user: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    method: POST
+    force_basic_auth: yes
+    status_code: 201
+    body_format: json
+    headers:
+      Content-Type: "application/json"
+    body: >-
+      {
+      "name": "{{ item.name }}",
+      "online": true,
+      "storage": {
+        "blobStoreName": "{{ item.blob }}",
+        "strictContentTypeValidation": true
+      },
+      "cleanup": {
+        "policyNames": [
+          "helm"
+        ]
+      },
+      "proxy": {
+        "remoteUrl": "{{ item.remote_url }}",
+        "contentMaxAge": 1440,
+        "metadataMaxAge": 1440
+      },
+      "negativeCache": {
+        "enabled": true,
+        "timeToLive": 1440
+      },
+      "httpClient": {
+        "blocked": false,
+        "autoBlock": false,
+        }
+      }
+  when: repo_check_response.status != 200
+  tags:
+    - setup_nexus
+    - config_nexus
+    - create_helm_repo

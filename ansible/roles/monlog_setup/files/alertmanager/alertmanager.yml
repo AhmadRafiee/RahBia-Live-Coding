@@ -1,0 +1,6 @@
+---
+route:
+  receiver: 'slack'
+
+receivers:
+  - name: 'slack'

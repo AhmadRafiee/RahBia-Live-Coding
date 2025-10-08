@@ -1,0 +1,17 @@
+---
+# service directory
+service_dir: "{{ project_dir }}/monlog"
+
+# MonLog domains
+prometheus_subdomain: prom
+alertmanager_subdomain: alert
+grafana_subdomain: grafana
+pushgateway_subdomain: pushgw
+
+# MonLog image versions
+prometheus_image_version: "v3.6.0"
+alertmanager_image_version: "v0.28.1"
+grafana_image_version: "12.2"
+pushgw_image_version: "v1.11.1"
+nodeexporter_image_version: "v1.9.1"
+blackbox_image_version: "v0.27.0"

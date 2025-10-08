@@ -21,6 +21,7 @@ create_blob:
   - apt
   - docker
   - raw
+  - helm
 
 anonymous_config:
   enabled: true
@@ -41,6 +42,11 @@ user:
   email_address: repo@RahBia.ir
   status: active
   roles_name: repo_admin
+
+create_helm_repository:
+  - name: "ingress-nginx"
+    remote_url: "https://kubernetes.github.io/ingress-nginx"
+    blob: "helm"
 
 create_apt_repository:
   - name: "ubuntu"

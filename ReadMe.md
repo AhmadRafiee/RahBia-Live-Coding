@@ -56,6 +56,8 @@ Below is a list of the sessions we've already completed in the RahBia Live Codin
   - **[Session 24:](2025-Sessions/Session-24-13-August.md)** Update all service with Ansible
   - **[Session 26:](2025-Sessions/Session-26-26-August.md)** Create multi-project CI/CD
   - **[Session 27:](2025-Sessions/Session-27-02-September.md)** Complete multi-project CI/CD and gitlab CI/CD-Catalog and Components
+  - **[Session 28:](2025-Sessions/Session-28-07-October.md)** Design and create Monitoring and Logging stack
+
 
 Feel free to check out the session's detailed steps and resources in the respective session folders. We’ll keep updating this list as we progress through more advanced topics in DevOps.
 
@@ -145,7 +147,7 @@ Below is a list of the tasks and topics we’ll be covering in this series. This
   - [x] Create backups for stateful services
   - [x] Store backups in the server and send them to object storage
   - [x] Test backups by restoring them on other runners
-  - [ ] Draw HLD diagrams of the monitoring services and the journey so far
+  - [x] Draw HLD diagrams of the monitoring services and the journey so far
   - [ ] Set up Prometheus stack on Docker for monitoring and alerting
   - [ ] Set up ELK stack on Docker for monitoring and logging
   - [ ] Set up Loki stack on Docker for logging

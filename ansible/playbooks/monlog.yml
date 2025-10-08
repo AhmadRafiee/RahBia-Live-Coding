@@ -1,0 +1,7 @@
+---
+- name: install and configuration MonLog services
+  hosts: rahbia-services
+  become: true
+  gather_facts: true
+  roles:
+    - monlog_setup
